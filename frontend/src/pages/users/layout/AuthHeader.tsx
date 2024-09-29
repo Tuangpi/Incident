@@ -61,7 +61,7 @@ const AuthHeader = () => {
                                 }}
                             />
                             {userDropDown && (
-                                <div className="absolute top-12 right-0">
+                                <div className="absolute top-12 right-0 z-10">
                                     <div className="bg-zinc-900 border border-zinc-300 border-opacity-25 rounded-corner font-medium py-1.5">
                                         <Link
                                             to="/user/profile"

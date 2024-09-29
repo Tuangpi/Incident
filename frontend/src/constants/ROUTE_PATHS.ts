@@ -16,6 +16,7 @@ export const ROUTE_PATHS = {
     USER_COMPANY_LISTS: "/user/company-lists",
     USER_COMPANY_CREATE: "/user/company-lists/create",
     USER_COMPANY_EDIT: "/user/company-lists/edit/:id",
+    USER_COMPANY_DETAIL: "/user/company-lists/detail/:id",
 
     USER_PROJECT_LISTS: "/user/project-lists",
     USER_PROJECT_CREATE: "/user/project-lists/create",
