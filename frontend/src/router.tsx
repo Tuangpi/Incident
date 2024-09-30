@@ -105,7 +105,7 @@ const router = createBrowserRouter([
                 errorElement: <ErrorPage />,
             },
             {
-                path: ROUTE_PATHS.USER_COMPANY_DETAIL,
+                path: ROUTE_PATHS.USER_COMPANY_DETAIL + "/:id",
                 element: <CompanyDetail />,
                 errorElement: <ErrorPage />,
             },
