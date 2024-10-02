@@ -3,6 +3,7 @@
 use App\Http\Controllers\API\Auth\CustomerAuthController;
 use App\Http\Controllers\API\Auth\UserAuthController;
 use App\Http\Controllers\API\Customer\BugsController;
+use App\Http\Controllers\API\Customer\ProjectController as CustomerProjectController;
 use App\Http\Controllers\API\User\CompanyController;
 use App\Http\Controllers\API\User\CustomerController;
 use App\Http\Controllers\API\User\EmployeeController;
@@ -41,9 +42,13 @@ Route::prefix('customer')->group(function () {
     Route::post('/login', [CustomerAuthController::class, 'login']);
 
     Route::group(['middleware' => ['auth.customer']], function () {
-        Route::prefix('company')->group(function () {
-            Route::get('/', [BugsController::class, 'index']);
-            Route::post('/create', [CompanyController::class, 'create']);
+        Route::get('/project', [CustomerProjectController::class, 'index']);
+        Route::prefix('bug')->group(function () {
+            Route::get('/{projectId}', [BugsController::class, 'index']);
+            Route::post('/create', [BugsController::class, 'create']);
+            Route::get('/edit/{id}', [BugsController::class, 'edit']);
+            Route::post('/update/{id}', [BugsController::class, 'update']);
+            Route::delete('/delete/{id}', [BugsController::class, 'delete']);
         });
         Route::post('/logout',  [CustomerAuthController::class, 'logout']);
     });

@@ -6,7 +6,7 @@ import ProtectedRoute from "./components/ProtectedRoute";
 import AuthLayout from "./pages/users/layout/AuthLayout";
 import Dashboard from "./pages/users/Dashboard";
 import CustomerLayout from "./pages/customers/layout/CustomerLayout";
-import CustomerDashboard from "./pages/customers/CustomerDashboard";
+import CustomerBugLists from "./pages/customers/CustomerBugLists";
 import CustomerLogin from "./pages/customers/Auth/CustomerLogin";
 import { ROUTE_PATHS } from "./constants/ROUTE_PATHS";
 import Company from "./pages/users/Company/Index";
@@ -29,6 +29,9 @@ import CustomerDetail from "./pages/users/Customer/CustomerDetail";
 import EditCustomer from "./pages/users/Customer/EditCustomer";
 import CreateCustomer from "./pages/users/Customer/CreateCustomer";
 import Customer from "./pages/users/Customer/Index";
+import CustomerBugCreate from "./pages/customers/CustomerBugCreate";
+import CustomerBugDetailEdit from "./pages/customers/CustomerBugDetailEdit";
+import CustomerDashboard from "./pages/customers/CustomerDashboard";
 
 const router = createBrowserRouter([
     {
@@ -52,6 +55,18 @@ const router = createBrowserRouter([
             {
                 path: ROUTE_PATHS.CUSTOMER_DASHBOARD,
                 element: <CustomerDashboard />,
+            },
+            {
+                path: ROUTE_PATHS.CUSTOMER_BUG_LISTS,
+                element: <CustomerBugLists />,
+            },
+            {
+                path: ROUTE_PATHS.CUSTOMER_BUG_CREATE,
+                element: <CustomerBugCreate />,
+            },
+            {
+                path: ROUTE_PATHS.CUSTOMER_BUG_DETAIL_EDIT,
+                element: <CustomerBugDetailEdit />,
             },
         ],
     },

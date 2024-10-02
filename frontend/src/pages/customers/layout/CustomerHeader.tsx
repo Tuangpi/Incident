@@ -1,25 +1,108 @@
 import { Button } from "@/components/ui/button";
+import {
+    Select,
+    SelectContent,
+    SelectGroup,
+    SelectItem,
+    SelectLabel,
+    SelectTrigger,
+    SelectValue,
+} from "@/components/ui/select";
 import { ROUTE_PATHS } from "@/constants/ROUTE_PATHS";
 import useAuth from "@/hooks/useAuth";
-import { Navigate } from "react-router-dom";
+import { customerFetchAllProjects } from "@/lib/clientAPI";
+import { useAppDispatch, useAppSelector } from "@/store";
+import { Project } from "@/types";
+import { useQuery } from "@tanstack/react-query";
+import { Link, Navigate, useLocation } from "react-router-dom";
+import { setSelectProject } from "./store/selectProjectReducer";
 
 const CustomerHeader = () => {
-  const { logout } = useAuth();
-  const handleLogout = () => {
-    logout("/customer/logout")
-      .then(() => <Navigate to={ROUTE_PATHS.CUSTOMER_LOGIN} />)
-      .catch((error) => console.log(error));
-  };
-  return (
-    <div className="w-full h-16 bg-stone-800 flex flex-col justify-center text-primary">
-      <div className="flex justify-between items-center px-4">
-        <div className="ml-8">
-          <img alt="company logo" />
-          <p>Company name</p>
-        </div>
-        <Button onClick={() => handleLogout()}>Logout</Button>
-      </div>
-    </div>
-  );
+    const { logout } = useAuth();
+    const location = useLocation();
+    const dispatch = useAppDispatch();
+
+    const selectProject = useAppSelector((state) => state.selectProject.id);
+
+    const { data: projects } = useQuery<Project[]>({
+        queryKey: ["projects"],
+        queryFn: customerFetchAllProjects,
+    });
+
+    const handleLogout = () => {
+        logout("/customer/logout")
+            .then(() => <Navigate to={ROUTE_PATHS.CUSTOMER_LOGIN} />)
+            .catch((error) => console.log(error));
+    };
+
+    return (
+        <>
+            <div className="w-full h-16 bg-stone-800 flex flex-col justify-center text-primary">
+                <div className="flex justify-between items-center px-4">
+                    <div className="ml-8">
+                        <img alt="company logo" />
+                        <p>Company name</p>
+                    </div>
+                    <Button variant="secondary" onClick={() => handleLogout()}>
+                        Logout
+                    </Button>
+                </div>
+            </div>
+            <div className="bg-[#221f1e] w-full pt-3 pb-2 pl-12 pr-4 flex justify-between items-end">
+                <div className="flex justify-between items-center text-zinc-200 gap-x-2">
+                    <Link
+                        to={ROUTE_PATHS.CUSTOMER_DASHBOARD}
+                        className={`block rounded-sm px-2 py-1 text-sm ${
+                            location.pathname.includes("dashboard")
+                                ? "bg-[#5F9729]"
+                                : "bg-zinc-700 hover:bg-zinc-900"
+                        }`}
+                    >
+                        Dashboard
+                    </Link>
+                    <Link
+                        to={ROUTE_PATHS.CUSTOMER_BUG_LISTS}
+                        className={`block rounded-sm px-2 py-1 text-sm ${
+                            location.pathname.endsWith("bug-lists")
+                                ? "bg-[#5F9729]"
+                                : "bg-zinc-700 hover:bg-zinc-900"
+                        }`}
+                    >
+                        Bug Lists
+                    </Link>
+                    <Link
+                        to={ROUTE_PATHS.CUSTOMER_BUG_CREATE}
+                        className={`block rounded-sm px-2 py-1 text-sm ${
+                            location.pathname.includes("create")
+                                ? "bg-[#5F9729]"
+                                : "bg-zinc-700 hover:bg-zinc-900"
+                        }`}
+                    >
+                        Create Bug
+                    </Link>
+                </div>
+                <Select
+                    value={selectProject}
+                    onValueChange={(value) =>
+                        dispatch(setSelectProject({ id: value }))
+                    }
+                >
+                    <SelectTrigger className="bg-zinc-300 w-1/6">
+                        <SelectValue placeholder="Select Project" />
+                    </SelectTrigger>
+                    <SelectContent className="bg-gray-700 text-zinc-300">
+                        <SelectGroup>
+                            <SelectLabel>Select Project</SelectLabel>
+                            {projects?.map((project) => (
+                                <SelectItem key={project.id} value={project.id}>
+                                    {project.name}
+                                </SelectItem>
+                            ))}
+                        </SelectGroup>
+                    </SelectContent>
+                </Select>
+            </div>
+        </>
+    );
 };
 export default CustomerHeader;

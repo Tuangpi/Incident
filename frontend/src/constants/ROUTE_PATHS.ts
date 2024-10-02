@@ -4,6 +4,9 @@ export const ROUTE_PATHS = {
 
     CUSTOMER_LAYOUT: "/customer",
     CUSTOMER_DASHBOARD: "/customer/dashboard",
+    CUSTOMER_BUG_LISTS: "/customer/bug-lists",
+    CUSTOMER_BUG_CREATE: "/customer/bug-lists/create",
+    CUSTOMER_BUG_DETAIL_EDIT: "/customer/bug-lists/edit",
 
     USER_LAYOUT: "/user",
     USER_DASHBOARD: "/user/dashboard",

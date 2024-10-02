@@ -59,6 +59,13 @@ export const fetchAllProjects = async () => {
     throw new Error("Error: Check Network Log");
 }
 
+export const customerFetchAllProjects = async () => {
+    const res = await axiosInstance.get(`/customer/project`);
+
+    if (res.status === 200) return res.data;
+    throw new Error("Error: Check Network Log");
+}
+
 export const createProject = async ({ companyId, name, description, logo, }: { companyId: string, name: string; description: string, logo: File | null }) => {
 
     const res = await axiosInstance.post(`/project/create`, { name, companyId, description, logo }, {

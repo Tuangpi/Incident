@@ -21,8 +21,12 @@ import { toast } from "@/hooks/use-toast";
 import { createBug } from "@/lib/bugClientAPI";
 import { CalendarIcon } from "@radix-ui/react-icons";
 import { useMutation } from "@tanstack/react-query";
-import React, { useState } from "react";
-import { IoArrowBack } from "react-icons/io5";
+import React, { useRef, useState } from "react";
+import {
+    IoArrowBack,
+    IoCloseCircle,
+    IoCloudUploadOutline,
+} from "react-icons/io5";
 import { Link } from "react-router-dom";
 import { Calendar } from "@/components/ui/calendar";
 import { cn } from "@/lib/utils";
@@ -37,10 +41,36 @@ const CreateBug = () => {
     const [priority, setPriority] = useState("");
     const [dueDate, setDueDate] = useState<Date>();
     const [assignTo, setAssignTo] = useState("");
-    const [resolution, setResolution] = useState("");
     const [selectedProject, setSelectedProject] = useState<string | undefined>(
         undefined
     );
+    const [image, setImage] = useState<File | null>(null);
+    const [imagePreview, setImagePreview] = useState("");
+
+    const fileInputRef = useRef<HTMLInputElement>(null);
+
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const targetFile = e.target.files?.[0];
+        if (targetFile) {
+            const url = URL.createObjectURL(targetFile);
+            setImage(targetFile);
+            setImagePreview(url);
+        }
+    };
+
+    const removeImage = () => {
+        if (imagePreview) {
+            URL.revokeObjectURL(imagePreview);
+        }
+        setImage(null);
+        setImagePreview("");
+    };
+
+    const triggerFileInput = () => {
+        if (fileInputRef.current) {
+            fileInputRef.current.click();
+        }
+    };
 
     const createBugMutation = useMutation({
         mutationFn: createBug,
@@ -56,7 +86,6 @@ const CreateBug = () => {
             setPriority("");
             // setDueDate();
             setAssignTo("");
-            setResolution("");
             setSelectedProject(undefined);
         },
     });
@@ -102,32 +131,46 @@ const CreateBug = () => {
                             onChange={(e) => setTitle(e.target.value)}
                         />
                     </div>
-                    {/* <div>
-                        <Label htmlFor="image">Image</Label>
-                        <Input
-                            id="image"
-                            type="text"
-                            value={image}
-                            onChange={(e) => setIma(e.target.value)}
-                        />
-                    </div> */}
                     <div>
-                        <Label htmlFor="description">Description</Label>
-                        <Textarea
-                            id="description"
-                            value={description}
-                            rows={6}
-                            onChange={(e) => setDescription(e.target.value)}
-                        />
+                        <Label htmlFor="project">Project</Label>
+                        <Select
+                            value={selectedProject}
+                            onValueChange={(value) => setSelectedProject(value)}
+                        >
+                            <SelectTrigger className="w-full">
+                                <SelectValue placeholder="Select Role" />
+                            </SelectTrigger>
+                            <SelectContent className="bg-gray-700 text-zinc-300">
+                                <SelectGroup>
+                                    <SelectLabel>Select Role</SelectLabel>
+                                    <SelectItem value="ADMIN">Admin</SelectItem>
+                                    <SelectItem value="USER">User</SelectItem>
+                                </SelectGroup>
+                            </SelectContent>
+                        </Select>
                     </div>
                     <div>
                         <Label htmlFor="type">Type</Label>
-                        <Input
-                            id="type"
+                        <Select
                             value={type}
-                            type="text"
-                            onChange={(e) => setType(e.target.value)}
-                        />
+                            onValueChange={(value) => setType(value)}
+                        >
+                            <SelectTrigger className="w-full">
+                                <SelectValue placeholder="Select Type" />
+                            </SelectTrigger>
+                            <SelectContent className="bg-gray-700 text-zinc-300">
+                                <SelectGroup>
+                                    <SelectLabel>Select Type</SelectLabel>
+                                    <SelectItem value="OPEN">Open</SelectItem>
+                                    <SelectItem value="RESOLVED">
+                                        Resolved
+                                    </SelectItem>
+                                    <SelectItem value="CLOSED">
+                                        Closed
+                                    </SelectItem>
+                                </SelectGroup>
+                            </SelectContent>
+                        </Select>
                     </div>
                     <div>
                         <Label htmlFor="status">Status</Label>
@@ -252,31 +295,54 @@ const CreateBug = () => {
                             </SelectContent>
                         </Select>
                     </div>
-                    <div>
-                        <Label htmlFor="project">Project</Label>
-                        <Select
-                            value={selectedProject}
-                            onValueChange={(value) => setSelectedProject(value)}
-                        >
-                            <SelectTrigger className="w-full">
-                                <SelectValue placeholder="Select Role" />
-                            </SelectTrigger>
-                            <SelectContent className="bg-gray-700 text-zinc-300">
-                                <SelectGroup>
-                                    <SelectLabel>Select Role</SelectLabel>
-                                    <SelectItem value="ADMIN">Admin</SelectItem>
-                                    <SelectItem value="USER">User</SelectItem>
-                                </SelectGroup>
-                            </SelectContent>
-                        </Select>
+                    <div className="col-span-2">
+                        <Label htmlFor="image">Image</Label>
+                        <Input
+                            ref={fileInputRef}
+                            type="file"
+                            id="image"
+                            onChange={handleChange}
+                            className="hidden"
+                            accept="image/*"
+                        />
+
+                        <div className="rounded-md h-36 w-36 relative overflow-hidden mt-1">
+                            {imagePreview ? (
+                                <>
+                                    <IoCloseCircle
+                                        size={20}
+                                        onClick={removeImage}
+                                        className="absolute right-1 top-1 cursor-pointer text-red-500"
+                                    />
+                                    <img
+                                        src={imagePreview}
+                                        className="h-full w-full object-cover"
+                                        alt="Preview"
+                                    />
+                                </>
+                            ) : (
+                                <div
+                                    className="group w-full h-full border border-gray-400 rounded-md flex flex-col items-center justify-center cursor-pointer"
+                                    onClick={triggerFileInput}
+                                >
+                                    <IoCloudUploadOutline
+                                        size={50}
+                                        className="text-gray-400 group-hover:text-gray-600"
+                                    />
+                                    <p className="text-gray-400 group-hover:text-gray-600">
+                                        Upload logo
+                                    </p>
+                                </div>
+                            )}
+                        </div>
                     </div>
-                    <div>
-                        <Label htmlFor="resolution">Resolution</Label>
+                    <div className="col-span-2">
+                        <Label htmlFor="description">Description</Label>
                         <Textarea
-                            id="resolution"
-                            value={resolution}
+                            id="description"
+                            value={description}
                             rows={6}
-                            onChange={(e) => setResolution(e.target.value)}
+                            onChange={(e) => setDescription(e.target.value)}
                         />
                     </div>
                 </div>

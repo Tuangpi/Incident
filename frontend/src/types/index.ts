@@ -39,15 +39,15 @@ export interface Project {
 export interface Bug {
     id: string;
     title: string;
-    image: string;
+    file: string;
     description: string;
     type: string
     status: string
     severity: string
     priority: string
     due_date: string
-    reported_by: string
-    assign_to: string
+    reported_by_id: string
+    assign_to_id: string
     project_id: string
     resolution: string
     created_at: string

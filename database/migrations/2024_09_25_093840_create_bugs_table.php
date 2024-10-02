@@ -14,19 +14,21 @@ return new class extends Migration
         Schema::create('bugs', function (Blueprint $table) {
             $table->ulid('id')->primary();
             $table->string('title');
-            $table->jsonb('image')->nullable();
+            $table->string('file')->nullable();
+            $table->string('link')->nullable();
             $table->text('description')->nullable();
-            $table->string('type')->nullable();
             $table->enum('status', ["OPEN", "IN-PROGRESS", "RESOLVED", "CLOSED"])->default('OPEN')->comment('OPEN, IN-PROGRESS, RESOLVED, CLOSED');
             $table->enum('severity', ["LOW", "MEDIUM", "HIGH", "CRITICAL"])->nullable()->comment('LOW, MEDIUM, HIGH, CRITICAL');
             $table->enum('priority', ["LOW", "MEDIUM", "HIGH", "URGENT"])->nullable()->comment('LOW, MEDIUM, HIGH, URGENT');
             $table->dateTime('due_date')->nullable();
 
-            $table->foreignUlid('reported_by')->constrained('customers')->cascadeOnDelete();
+            $table->foreignUlid('bug_types_id')->nullable()->constrained('bug_types')->cascadeOnDelete();
 
-            $table->foreignUlid('assigned_to')->nullable()->constrained('users')->cascadeOnDelete();
+            $table->foreignUlid('reported_by_id')->constrained('customers')->cascadeOnDelete();
 
-            $table->foreignUlid('project_id')->nullable()->constrained('projects')->cascadeOnDelete();
+            $table->foreignUlid('assigned_to_id')->nullable()->constrained('users')->cascadeOnDelete();
+
+            $table->foreignUlid('project_id')->constrained('projects')->cascadeOnDelete();
 
             $table->string('resolution')->nullable();     // Resolution details (if any)
             $table->timestamps();

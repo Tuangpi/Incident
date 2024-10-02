@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\BugType;
 use App\Models\Company;
 use App\Models\Customer;
 use App\Models\User;
@@ -37,5 +38,16 @@ class DatabaseSeeder extends Seeder
             'password' => bcrypt('asdf1234'),
             'company_id' => $company->id,
         ]);
+
+        $bugTypes = [
+            ['name' => 'New Feature Request'],
+            ['name' => 'Bug'],
+            ['name' => 'Issue'],
+            ['name' => 'Enhancement']
+        ];
+
+        foreach ($bugTypes as $type) {
+            BugType::create($type);
+        }
     }
 }
