@@ -33,11 +33,11 @@ class CompanyController extends Controller
         if ($request->hasFile('logo')) {
             $logo = $request->file('logo');
             $logo_name = time() . "_" . $logo->getClientOriginalName();
-            if (!Storage::exists('public/uploads/companyLogo')) {
-                Storage::makeDirectory('public/uploads/companyLogo');
+            if (!Storage::exists('uploads/companyLogo')) {
+                Storage::makeDirectory('uploads/companyLogo');
             }
 
-            $logo->storeAs('public/uploads/companyLogo', $logo_name);
+            $logo->storeAs('uploads/companyLogo', $logo_name);
 
             $company->logo = $logo_name;
         }

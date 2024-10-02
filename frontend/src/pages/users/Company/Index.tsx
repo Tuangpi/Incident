@@ -3,11 +3,12 @@ import { ROUTE_PATHS } from "@/constants/ROUTE_PATHS";
 import { useAppDispatch, useAppSelector } from "@/store";
 import { BiMenuAltLeft } from "react-icons/bi";
 import { Link } from "react-router-dom";
-import { toggleAction } from "../Employee/store/activeActionReducer";
+import { toggleAction } from "../../../store/activeActionReducer";
 import React from "react";
 import { useQuery } from "@tanstack/react-query";
 import { fetchAllCompanies } from "@/lib/clientAPI";
 import { Company as CompanyType } from "@/types";
+import TableLoading from "@/components/TableLoading";
 
 const Company = () => {
     const dispatch = useAppDispatch();
@@ -21,7 +22,7 @@ const Company = () => {
         dispatch(toggleAction({ id: actionId === id ? undefined : id }));
     };
 
-    const { data: companies } = useQuery<CompanyType[]>({
+    const { data: companies, isLoading } = useQuery<CompanyType[]>({
         queryKey: ["companies"],
         queryFn: fetchAllCompanies,
     });
@@ -37,69 +38,104 @@ const Company = () => {
                         <Button variant="secondary">Create</Button>
                     </Link>
                 </div>
-                <table className="bg-zinc-800 rounded-t-lg">
-                    <thead>
-                        <tr className="bg-zinc-600">
-                            <th className="py-2 text-zinc-300 border-r border-b border-solid border-zinc-600 rounded-tl-lg">
-                                Name
-                            </th>
-                            <th className="py-2 text-zinc-300 border border-solid border-zinc-600">
-                                Logo
-                            </th>
-                            <th className="py-2 text-zinc-300 border-l border-b border-solid border-zinc-600 rounded-tr-lg text-center">
-                                Action
-                            </th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {companies?.map((company) => (
-                            <tr className="hover:bg-zinc-700" key={company.id}>
-                                <td className="text-zinc-300 border border-solid border-zinc-600 text-sm">
-                                    {company.name}
-                                </td>
-                                <td className="text-zinc-300 border border-solid border-zinc-600 text-sm">
-                                    {company.logo}
-                                </td>
-                                <td className="text-zinc-300 border border-solid border-zinc-600 text-sm">
-                                    <div className="flex justify-center items-center relative">
-                                        <BiMenuAltLeft
-                                            size={20}
-                                            className="cursor-pointer"
-                                            onClick={(e) =>
-                                                handleActionToggle(
-                                                    company.id,
-                                                    e
-                                                )
-                                            }
-                                        />
-                                        {actionId == company.id && (
-                                            <div
-                                                className="bg-zinc-700 w-28 h-32 absolute top-1 right-20 rounded-md p-2 px-2.5"
-                                                onClick={(e) =>
-                                                    e.stopPropagation()
-                                                }
-                                            >
-                                                <Link
-                                                    to={`${ROUTE_PATHS.USER_COMPANY_DETAIL}/${company.id}`}
-                                                    className="block"
-                                                >
-                                                    Detail
-                                                </Link>
-                                                <Link
-                                                    to={`${ROUTE_PATHS.USER_COMPANY_EDIT}/${company.id}`}
-                                                    className="block"
-                                                >
-                                                    Edit
-                                                </Link>
-                                                <div>Delete</div>
-                                            </div>
-                                        )}
-                                    </div>
-                                </td>
+                {isLoading ? (
+                    <TableLoading numberOfTableColumns={4} numberOfRows={8} />
+                ) : (
+                    <table className="bg-zinc-800 rounded-t-lg">
+                        <thead>
+                            <tr className="bg-zinc-600">
+                                <th className="py-2 text-zinc-300 border-r border-b border-solid border-zinc-600 rounded-tl-lg">
+                                    ID
+                                </th>
+                                <th className="py-2 text-zinc-300 border border-solid border-zinc-600">
+                                    Logo
+                                </th>
+                                <th className="py-2 text-zinc-300 border border-solid border-zinc-600 text-center">
+                                    Logo
+                                </th>
+                                <th className="py-2 text-zinc-300 border-l border-b border-solid border-zinc-600 rounded-tr-lg text-center">
+                                    Action
+                                </th>
                             </tr>
-                        ))}
-                    </tbody>
-                </table>
+                        </thead>
+                        <tbody>
+                            {companies && companies.length > 0 ? (
+                                companies.map((company, i) => (
+                                    <tr
+                                        className="hover:bg-zinc-700"
+                                        key={company.id}
+                                    >
+                                        <td className="text-zinc-300 border border-solid border-zinc-600 text-sm">
+                                            {i + 1}
+                                        </td>
+                                        <td className="text-zinc-300 border border-solid border-zinc-600 text-sm">
+                                            {company.name}
+                                        </td>
+                                        <td className="text-zinc-300 border border-solid border-zinc-600 text-sm">
+                                            <div className="flex justify-center items-center">
+                                                <img
+                                                    className="max-h-20 max-w-20"
+                                                    src={`${
+                                                        import.meta.env
+                                                            .VITE_API_BASE_URL
+                                                    }/storage/uploads/companyLogo/${
+                                                        company.logo
+                                                    }`}
+                                                    alt=""
+                                                />
+                                            </div>
+                                        </td>
+                                        <td className="text-zinc-300 border border-solid border-zinc-600 text-sm">
+                                            <div className="flex justify-center items-center relative">
+                                                <BiMenuAltLeft
+                                                    size={20}
+                                                    className="cursor-pointer"
+                                                    onClick={(e) =>
+                                                        handleActionToggle(
+                                                            company.id,
+                                                            e
+                                                        )
+                                                    }
+                                                />
+                                                {actionId == company.id && (
+                                                    <div
+                                                        className="bg-zinc-700 w-28 h-32 absolute top-1 right-20 rounded-md p-2 px-2.5"
+                                                        onClick={(e) =>
+                                                            e.stopPropagation()
+                                                        }
+                                                    >
+                                                        <Link
+                                                            to={`${ROUTE_PATHS.USER_COMPANY_DETAIL}/${company.id}`}
+                                                            className="block"
+                                                        >
+                                                            Detail
+                                                        </Link>
+                                                        <Link
+                                                            to={`${ROUTE_PATHS.USER_COMPANY_EDIT}/${company.id}`}
+                                                            className="block"
+                                                        >
+                                                            Edit
+                                                        </Link>
+                                                        <div>Delete</div>
+                                                    </div>
+                                                )}
+                                            </div>
+                                        </td>
+                                    </tr>
+                                ))
+                            ) : (
+                                <tr className="hover:bg-transparent">
+                                    <td
+                                        colSpan={4}
+                                        className="text-zinc-300 text-center text-base py-2"
+                                    >
+                                        no data
+                                    </td>
+                                </tr>
+                            )}
+                        </tbody>
+                    </table>
+                )}
             </div>
         </div>
     );

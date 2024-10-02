@@ -17,9 +17,9 @@ return new class extends Migration
             $table->jsonb('image')->nullable();
             $table->text('description')->nullable();
             $table->string('type')->nullable();
-            $table->enum('status', ["open", "in-progress", "resolved", "closed"])->default('open')->comment('open, in-progress, resolved, closed');
-            $table->enum('severity', ["low", "medium", "high", "critical"])->nullable()->comment('low, medium, high, critical');
-            $table->enum('priority', ["low", "medium", "high", "urgent"])->nullable()->comment('low, medium, high, urgent');
+            $table->enum('status', ["OPEN", "IN-PROGRESS", "RESOLVED", "CLOSED"])->default('OPEN')->comment('OPEN, IN-PROGRESS, RESOLVED, CLOSED');
+            $table->enum('severity', ["LOW", "MEDIUM", "HIGH", "CRITICAL"])->nullable()->comment('LOW, MEDIUM, HIGH, CRITICAL');
+            $table->enum('priority', ["LOW", "MEDIUM", "HIGH", "URGENT"])->nullable()->comment('LOW, MEDIUM, HIGH, URGENT');
             $table->dateTime('due_date')->nullable();
 
             $table->foreignUlid('reported_by')->constrained('customers')->cascadeOnDelete();

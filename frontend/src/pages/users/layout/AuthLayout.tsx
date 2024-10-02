@@ -3,7 +3,7 @@ import { useAppDispatch } from "@/store";
 import { toggleDropDown } from "./store/UserMenuDropDownReducer";
 import AuthSidebar from "./AuthSidebar";
 import AuthHeader from "./AuthHeader";
-import { toggleAction } from "../Employee/store/activeActionReducer";
+import { toggleAction } from "../../../store/activeActionReducer";
 
 const AuthLayout = () => {
     const dispatch = useAppDispatch();

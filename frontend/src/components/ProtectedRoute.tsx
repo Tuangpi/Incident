@@ -4,10 +4,17 @@ import useAuth from "@/hooks/useAuth";
 import { ROUTE_PATHS } from "@/constants/ROUTE_PATHS";
 
 const ProtectedRoute: React.FC<{ children: React.ReactNode }> = ({
-  children,
+    children,
 }) => {
-  const { user } = useAuth();
-  return user ? <>{children}</> : <Navigate to={ROUTE_PATHS.CUSTOMER_LOGIN} />;
+    const { user, loading } = useAuth();
+
+    if (!loading) {
+        return user ? (
+            <>{children}</>
+        ) : (
+            <Navigate to={ROUTE_PATHS.CUSTOMER_LOGIN} />
+        );
+    }
 };
 
 export default ProtectedRoute;

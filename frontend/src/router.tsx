@@ -14,11 +14,21 @@ import Employee from "./pages/users/Employee/Index";
 import Project from "./pages/users/Project/Index";
 import Bug from "./pages/users/Bug/Index";
 import CreateEmployee from "./pages/users/Employee/CreateEmployee";
-import EditEmployee from "./pages/users/Employee/EitEmployee";
+import EditEmployee from "./pages/users/Employee/EditEmployee";
 import EmployeeDetail from "./pages/users/Employee/EmployeeDetail";
 import CreateCompany from "./pages/users/Company/CreateCompany";
 import EditCompany from "./pages/users/Company/EditCompany";
 import CompanyDetail from "./pages/users/Company/CompanyDetail";
+import CreateProject from "./pages/users/Project/CreateProject";
+import EditProject from "./pages/users/Project/EditProject";
+import ProjectDetail from "./pages/users/Project/ProjectDetail";
+import CreateBug from "./pages/users/Bug/CreateBug";
+import EditBug from "./pages/users/Bug/EditBug";
+import BugDetail from "./pages/users/Bug/BugDetail";
+import CustomerDetail from "./pages/users/Customer/CustomerDetail";
+import EditCustomer from "./pages/users/Customer/EditCustomer";
+import CreateCustomer from "./pages/users/Customer/CreateCustomer";
+import Customer from "./pages/users/Customer/Index";
 
 const router = createBrowserRouter([
     {
@@ -42,7 +52,6 @@ const router = createBrowserRouter([
             {
                 path: ROUTE_PATHS.CUSTOMER_DASHBOARD,
                 element: <CustomerDashboard />,
-                errorElement: <ErrorPage />,
             },
         ],
     },
@@ -67,57 +76,86 @@ const router = createBrowserRouter([
             {
                 path: ROUTE_PATHS.USER_DASHBOARD,
                 element: <Dashboard />,
-                errorElement: <ErrorPage />,
             },
             {
                 path: ROUTE_PATHS.USER_EMPLOYEE_LISTS,
                 element: <Employee />,
-                errorElement: <ErrorPage />,
             },
             {
                 path: ROUTE_PATHS.USER_EMPLOYEE_CREATE,
                 element: <CreateEmployee />,
-                errorElement: <ErrorPage />,
             },
             {
-                path: ROUTE_PATHS.USER_EMPLOYEE_EDIT,
+                path: ROUTE_PATHS.USER_EMPLOYEE_EDIT + "/:id",
                 element: <EditEmployee />,
-                errorElement: <ErrorPage />,
             },
             {
-                path: ROUTE_PATHS.USER_EMPLOYEE_DETAIL,
+                path: ROUTE_PATHS.USER_EMPLOYEE_DETAIL + "/id",
                 element: <EmployeeDetail />,
-                errorElement: <ErrorPage />,
+            },
+            {
+                path: ROUTE_PATHS.USER_CUSTOMER_LISTS,
+                element: <Customer />,
+            },
+            {
+                path: ROUTE_PATHS.USER_CUSTOMER_CREATE,
+                element: <CreateCustomer />,
+            },
+            {
+                path: ROUTE_PATHS.USER_CUSTOMER_EDIT + "/:id",
+                element: <EditCustomer />,
+            },
+            {
+                path: ROUTE_PATHS.USER_CUSTOMER_DETAIL + "/id",
+                element: <CustomerDetail />,
             },
             {
                 path: ROUTE_PATHS.USER_COMPANY_LISTS,
                 element: <Company />,
-                errorElement: <ErrorPage />,
             },
             {
                 path: ROUTE_PATHS.USER_COMPANY_CREATE,
                 element: <CreateCompany />,
-                errorElement: <ErrorPage />,
             },
             {
-                path: ROUTE_PATHS.USER_COMPANY_EDIT,
+                path: ROUTE_PATHS.USER_COMPANY_EDIT + "/:id",
                 element: <EditCompany />,
-                errorElement: <ErrorPage />,
             },
             {
                 path: ROUTE_PATHS.USER_COMPANY_DETAIL + "/:id",
                 element: <CompanyDetail />,
-                errorElement: <ErrorPage />,
             },
             {
                 path: ROUTE_PATHS.USER_PROJECT_LISTS,
                 element: <Project />,
-                errorElement: <ErrorPage />,
+            },
+            {
+                path: ROUTE_PATHS.USER_PROJECT_CREATE,
+                element: <CreateProject />,
+            },
+            {
+                path: ROUTE_PATHS.USER_PROJECT_EDIT + "/:id",
+                element: <EditProject />,
+            },
+            {
+                path: ROUTE_PATHS.USER_PROJECT_DETAIL + "/:id",
+                element: <ProjectDetail />,
             },
             {
                 path: ROUTE_PATHS.USER_BUG_LISTS,
                 element: <Bug />,
-                errorElement: <ErrorPage />,
+            },
+            {
+                path: ROUTE_PATHS.USER_BUG_CREATE,
+                element: <CreateBug />,
+            },
+            {
+                path: ROUTE_PATHS.USER_BUG_EDIT + "/:id",
+                element: <EditBug />,
+            },
+            {
+                path: ROUTE_PATHS.USER_BUG_DETAIL + "/:id",
+                element: <BugDetail />,
             },
         ],
     },

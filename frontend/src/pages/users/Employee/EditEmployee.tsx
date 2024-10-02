@@ -1,4 +1,4 @@
 const EditEmployee = () => {
-  return <div>EditEmployee</div>;
+    return <div>EditEmployee</div>;
 };
 export default EditEmployee;

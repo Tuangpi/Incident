@@ -12,42 +12,45 @@ import {
 } from "@/components/ui/select";
 import { ROUTE_PATHS } from "@/constants/ROUTE_PATHS";
 import { toast } from "@/hooks/use-toast";
-import { createEmployee } from "@/lib/clientAPI";
-import { useMutation } from "@tanstack/react-query";
+import { createCustomer, fetchAllCompanies } from "@/lib/clientAPI";
+import { Company } from "@/types";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import React, { useState } from "react";
 import { IoArrowBack } from "react-icons/io5";
 import { Link } from "react-router-dom";
 
-const CreateEmployee = () => {
-    const [name, setName] = useState("");
+const CreateCustomer = () => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
-    const [selectedRole, setSelectedRole] = useState<string | undefined>(
+    const [selectedCompany, setSelectedCompany] = useState<string | undefined>(
         undefined
     );
 
-    const createEmployeeMutation = useMutation({
-        mutationFn: createEmployee,
+    const { data: companies } = useQuery<Company[]>({
+        queryKey: ["companies"],
+        queryFn: fetchAllCompanies,
+    });
+
+    const createCustomerMutation = useMutation({
+        mutationFn: createCustomer,
         onSuccess: () => {
             toast({
-                description: "Employee has been created successfully!",
+                description: "Customer has been created successfully!",
             });
-            setName("");
             setEmail("");
             setPassword("");
-            setSelectedRole(undefined);
+            setSelectedCompany(undefined);
         },
     });
 
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
-        if (selectedRole) {
-            createEmployeeMutation.mutate({
-                name,
+        if (selectedCompany) {
+            createCustomerMutation.mutate({
                 email,
                 password,
-                role: selectedRole,
+                companyId: selectedCompany,
             });
         }
     };
@@ -56,7 +59,7 @@ const CreateEmployee = () => {
         <div className="m-2">
             <div className="mb-4 flex justify-between items-center">
                 <Link
-                    to={ROUTE_PATHS.USER_EMPLOYEE_LISTS}
+                    to={ROUTE_PATHS.USER_CUSTOMER_LISTS}
                     className="flex justify-between items-center gap-x-2 underline text-gray-300 font-medium hover:text-gray-200"
                 >
                     <div>
@@ -64,22 +67,13 @@ const CreateEmployee = () => {
                     </div>
                     <div>Back</div>
                 </Link>
-                <h4 className="text-gray-300">Create Employee</h4>
+                <h4 className="text-gray-300">Create Customer</h4>
             </div>
             <form
                 className="bg-zinc-800 rounded-lg shadow-md"
                 onSubmit={handleSubmit}
             >
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4 p-4">
-                    <div>
-                        <Label htmlFor="name">Name</Label>
-                        <Input
-                            id="name"
-                            type="text"
-                            value={name}
-                            onChange={(e) => setName(e.target.value)}
-                        />
-                    </div>
                     <div>
                         <Label htmlFor="email">Email</Label>
                         <Input
@@ -99,19 +93,25 @@ const CreateEmployee = () => {
                         />
                     </div>
                     <div>
-                        <Label htmlFor="role">Role</Label>
+                        <Label htmlFor="role">For Company</Label>
                         <Select
-                            value={selectedRole}
-                            onValueChange={(value) => setSelectedRole(value)}
+                            value={selectedCompany}
+                            onValueChange={(value) => setSelectedCompany(value)}
                         >
                             <SelectTrigger className="w-full">
-                                <SelectValue placeholder="Select Role" />
+                                <SelectValue placeholder="Select Company" />
                             </SelectTrigger>
                             <SelectContent className="bg-gray-700 text-zinc-300">
                                 <SelectGroup>
-                                    <SelectLabel>Select Role</SelectLabel>
-                                    <SelectItem value="ADMIN">Admin</SelectItem>
-                                    <SelectItem value="USER">User</SelectItem>
+                                    <SelectLabel>Select Company</SelectLabel>
+                                    {companies?.map((company) => (
+                                        <SelectItem
+                                            value={company.id}
+                                            key={company.id}
+                                        >
+                                            {company.name}
+                                        </SelectItem>
+                                    ))}
                                 </SelectGroup>
                             </SelectContent>
                         </Select>
@@ -122,7 +122,7 @@ const CreateEmployee = () => {
                         variant={"secondary"}
                         className="w-28"
                         type="submit"
-                        disabled={createEmployeeMutation.isPending}
+                        disabled={createCustomerMutation.isPending}
                     >
                         Save
                     </Button>
@@ -131,4 +131,4 @@ const CreateEmployee = () => {
         </div>
     );
 };
-export default CreateEmployee;
+export default CreateCustomer;

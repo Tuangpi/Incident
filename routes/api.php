@@ -18,6 +18,11 @@ Route::group(['middleware' => ['auth.user']], function () {
     Route::put('/employee/update/{id}', [EmployeeController::class, 'update']);
     Route::delete('/employee/delete/{id}', [EmployeeController::class, 'delete']);
 
+    Route::get('/customer', [CustomerController::class, 'index']);
+    Route::post('/customer/create', [CustomerController::class, 'create']);
+    Route::put('/customer/update/{id}', [CustomerController::class, 'update']);
+    Route::delete('/customer/delete/{id}', [CustomerController::class, 'delete']);
+
     Route::get('/company', [CompanyController::class, 'index']);
     Route::post('/company/create', [CompanyController::class, 'create']);
     Route::put('/company/update/{id}', [CompanyController::class, 'update']);
@@ -27,11 +32,6 @@ Route::group(['middleware' => ['auth.user']], function () {
     Route::post('/project/create', [ProjectController::class, 'create']);
     Route::put('/project/update/{id}', [ProjectController::class, 'update']);
     Route::delete('/project/delete/{id}', [ProjectController::class, 'delete']);
-
-    Route::get('/customer', [CustomerController::class, 'index']);
-    Route::post('/customer/create', [CustomerController::class, 'create']);
-    Route::put('/customer/update/{id}', [CustomerController::class, 'update']);
-    Route::delete('/customer/delete/{id}', [CustomerController::class, 'delete']);
     // });
 
     Route::post('/logout', [UserAuthController::class, 'logout']);
