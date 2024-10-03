@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { ROUTE_PATHS } from "@/constants/ROUTE_PATHS";
 import { useAppDispatch, useAppSelector } from "@/store";
-import { BiMenuAltLeft } from "react-icons/bi";
+import { BiEdit, BiMenuAltLeft, BiTrash } from "react-icons/bi";
 import { Link } from "react-router-dom";
 import { toggleAction } from "../../../store/activeActionReducer";
 import React from "react";
@@ -9,6 +9,7 @@ import { useQuery } from "@tanstack/react-query";
 import { fetchAllCompanies } from "@/lib/clientAPI";
 import { Company as CompanyType } from "@/types";
 import TableLoading from "@/components/TableLoading";
+import { IoInformationCircle } from "react-icons/io5";
 
 const Company = () => {
     const dispatch = useAppDispatch();
@@ -39,7 +40,7 @@ const Company = () => {
                     </Link>
                 </div>
                 {isLoading ? (
-                    <TableLoading numberOfTableColumns={4} numberOfRows={8} />
+                    <TableLoading numberOfTableColumns={4} numberOfRows={4} />
                 ) : (
                     <table className="bg-zinc-800 rounded-t-lg">
                         <thead>
@@ -85,8 +86,8 @@ const Company = () => {
                                                 />
                                             </div>
                                         </td>
-                                        <td className="text-zinc-300 border border-solid border-zinc-600 text-sm">
-                                            <div className="flex justify-center items-center relative">
+                                        <td className="text-zinc-300 border border-solid border-zinc-600 text-sm relative">
+                                            <div className="flex justify-center items-center absolute left-1/2 top-1/2 transform -translate-y-1/2 -translate-x-1/2">
                                                 <BiMenuAltLeft
                                                     size={20}
                                                     className="cursor-pointer"
@@ -99,24 +100,33 @@ const Company = () => {
                                                 />
                                                 {actionId == company.id && (
                                                     <div
-                                                        className="bg-zinc-700 w-28 h-32 absolute top-1 right-20 rounded-md p-2 px-2.5"
+                                                        className="bg-zinc-700 w-28 h-28 absolute top-4 right-4 rounded-md select-none border border-zinc-500"
                                                         onClick={(e) =>
                                                             e.stopPropagation()
                                                         }
                                                     >
                                                         <Link
                                                             to={`${ROUTE_PATHS.USER_COMPANY_DETAIL}/${company.id}`}
-                                                            className="block"
+                                                            className="flex items-center gap-x-2 hover:bg-zinc-600 p-2 px-2.5 rounded-t-md border-b border-gray-500"
                                                         >
-                                                            Detail
+                                                            <IoInformationCircle
+                                                                size={20}
+                                                            />
+                                                            <span>Detail</span>
                                                         </Link>
                                                         <Link
                                                             to={`${ROUTE_PATHS.USER_COMPANY_EDIT}/${company.id}`}
-                                                            className="block"
+                                                            className="flex items-center gap-x-2 p-2 px-2.5 hover:bg-zinc-600 border-b border-gray-500"
                                                         >
-                                                            Edit
+                                                            <BiEdit size={20} />
+                                                            <span>Edit</span>
                                                         </Link>
-                                                        <div>Delete</div>
+                                                        <div className="flex items-center gap-x-2 p-2 px-2.5 cursor-pointer hover:bg-zinc-600">
+                                                            <BiTrash
+                                                                size={20}
+                                                            />
+                                                            <span>Delete</span>
+                                                        </div>
                                                     </div>
                                                 )}
                                             </div>

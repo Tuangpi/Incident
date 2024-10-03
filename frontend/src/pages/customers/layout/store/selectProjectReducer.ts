@@ -1,11 +1,11 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 interface selectProjectState {
-    id: string | undefined;
+    id: string;
 }
 
 const initialState: selectProjectState = {
-    id: undefined
+    id: ""
 };
 
 const selectProjectSlice = createSlice({

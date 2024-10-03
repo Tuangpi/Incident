@@ -1,12 +1,14 @@
 import axiosInstance from "./axiosInstance";
+import { delayFetch } from "./utils";
 
 export const customerFetchAllBugs = async (id: string) => {
-    console.log(id)
-    const res = await axiosInstance.get(`/customer/bug/${id}`);
+    return await delayFetch(async () => {
+        const res = await axiosInstance.get(`/customer/bug/${id}`);
+        if (res.status === 200) return res.data;
+        throw new Error("Error: Check Network Log");
+    }, 2500);
+};
 
-    if (res.status === 200) return res.data;
-    throw new Error("Error: Check Network Log");
-}
 
 export const customerCreateBug = async ({
     title,

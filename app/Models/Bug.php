@@ -9,4 +9,9 @@ use Illuminate\Database\Eloquent\Model;
 class Bug extends Model
 {
     use HasFactory, HasUlids;
+
+    public function project()
+    {
+        return $this->belongsTo(Project::class);
+    }
 }

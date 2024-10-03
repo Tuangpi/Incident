@@ -16,13 +16,14 @@ import { Project } from "@/types";
 import { useQuery } from "@tanstack/react-query";
 import { Link, Navigate, useLocation } from "react-router-dom";
 import { setSelectProject } from "./store/selectProjectReducer";
+import { useEffect } from "react";
 
 const CustomerHeader = () => {
     const { logout } = useAuth();
     const location = useLocation();
     const dispatch = useAppDispatch();
 
-    const selectProject = useAppSelector((state) => state.selectProject.id);
+    const selectedProject = useAppSelector((state) => state.selectProject.id);
 
     const { data: projects } = useQuery<Project[]>({
         queryKey: ["projects"],
@@ -34,6 +35,10 @@ const CustomerHeader = () => {
             .then(() => <Navigate to={ROUTE_PATHS.CUSTOMER_LOGIN} />)
             .catch((error) => console.log(error));
     };
+
+    useEffect(() => {
+        if (projects) dispatch(setSelectProject({ id: projects[0].id }));
+    }, [projects]);
 
     return (
         <>
@@ -48,11 +53,11 @@ const CustomerHeader = () => {
                     </Button>
                 </div>
             </div>
-            <div className="bg-[#221f1e] w-full pt-3 pb-2 pl-12 pr-4 flex justify-between items-end">
+            <div className="bg-[#221f1e] w-full pt-3 pl-12 pr-4 flex justify-between items-end">
                 <div className="flex justify-between items-center text-zinc-200 gap-x-2">
                     <Link
                         to={ROUTE_PATHS.CUSTOMER_DASHBOARD}
-                        className={`block rounded-sm px-2 py-1 text-sm ${
+                        className={`block rounded-t-md px-2 py-1 text-sm ${
                             location.pathname.includes("dashboard")
                                 ? "bg-[#5F9729]"
                                 : "bg-zinc-700 hover:bg-zinc-900"
@@ -62,7 +67,7 @@ const CustomerHeader = () => {
                     </Link>
                     <Link
                         to={ROUTE_PATHS.CUSTOMER_BUG_LISTS}
-                        className={`block rounded-sm px-2 py-1 text-sm ${
+                        className={`block rounded-t-md px-2 py-1 text-sm ${
                             location.pathname.endsWith("bug-lists")
                                 ? "bg-[#5F9729]"
                                 : "bg-zinc-700 hover:bg-zinc-900"
@@ -70,19 +75,21 @@ const CustomerHeader = () => {
                     >
                         Bug Lists
                     </Link>
-                    <Link
-                        to={ROUTE_PATHS.CUSTOMER_BUG_CREATE}
-                        className={`block rounded-sm px-2 py-1 text-sm ${
-                            location.pathname.includes("create")
-                                ? "bg-[#5F9729]"
-                                : "bg-zinc-700 hover:bg-zinc-900"
-                        }`}
-                    >
-                        Create Bug
-                    </Link>
+                    {selectedProject && (
+                        <Link
+                            to={ROUTE_PATHS.CUSTOMER_BUG_CREATE}
+                            className={`block rounded-t-md px-2 py-1 text-sm ${
+                                location.pathname.includes("create")
+                                    ? "bg-[#5F9729]"
+                                    : "bg-zinc-700 hover:bg-zinc-900"
+                            }`}
+                        >
+                            Create Bug
+                        </Link>
+                    )}
                 </div>
                 <Select
-                    value={selectProject}
+                    value={selectedProject}
                     onValueChange={(value) =>
                         dispatch(setSelectProject({ id: value }))
                     }

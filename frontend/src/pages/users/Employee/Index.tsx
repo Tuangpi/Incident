@@ -1,13 +1,14 @@
 import { Button } from "@/components/ui/button";
 import { ROUTE_PATHS } from "@/constants/ROUTE_PATHS";
 import { useAppDispatch, useAppSelector } from "@/store";
-import { BiMenuAltLeft } from "react-icons/bi";
+import { BiEdit, BiMenuAltLeft, BiTrash } from "react-icons/bi";
 import { Link } from "react-router-dom";
 import { toggleAction } from "../../../store/activeActionReducer";
 import { useQuery } from "@tanstack/react-query";
 import { User } from "@/types";
 import { fetchAllEmployees } from "@/lib/clientAPI";
 import TableLoading from "@/components/TableLoading";
+import { IoInformationCircle } from "react-icons/io5";
 
 const Employee = () => {
     const dispatch = useAppDispatch();
@@ -52,7 +53,7 @@ const Employee = () => {
                                 <th className="py-2 text-zinc-300 border border-solid border-zinc-600">
                                     Email
                                 </th>
-                                <th className="py-2 text-zinc-300 border-l border-b border-solid border-zinc-600 rounded-tr-lg">
+                                <th className="py-2 text-zinc-300 border-b border-solid border-zinc-600">
                                     Role
                                 </th>
                                 <th className="py-2 text-zinc-300 border-l border-b border-solid border-zinc-600 rounded-tr-lg text-center">
@@ -79,8 +80,8 @@ const Employee = () => {
                                         <td className="text-zinc-300 border border-solid border-zinc-600 text-sm">
                                             {employee.role.toUpperCase()}
                                         </td>
-                                        <td className="text-zinc-300 border border-solid border-zinc-600 text-sm">
-                                            <div className="flex justify-center items-center relative">
+                                        <td className="text-zinc-300 border border-solid border-zinc-600 text-sm relative">
+                                            <div className="flex justify-center items-center absolute left-1/2 top-1/2 transform -translate-y-1/2 -translate-x-1/2">
                                                 <BiMenuAltLeft
                                                     size={20}
                                                     className="cursor-pointer"
@@ -91,16 +92,35 @@ const Employee = () => {
                                                         )
                                                     }
                                                 />
-                                                {actionId === employee.id && (
+                                                {actionId == employee.id && (
                                                     <div
-                                                        className="bg-zinc-700 w-28 h-32 absolute top-2 right-14 rounded-md p-2 px-2.5"
+                                                        className="bg-zinc-700 w-28 h-28 absolute top-4 right-4 rounded-md select-none border border-zinc-500"
                                                         onClick={(e) =>
                                                             e.stopPropagation()
                                                         }
                                                     >
-                                                        <div>Detail</div>
-                                                        <div>Edit</div>
-                                                        <div>Delete</div>
+                                                        <Link
+                                                            to={`${ROUTE_PATHS.USER_EMPLOYEE_DETAIL}/${employee.id}`}
+                                                            className="flex items-center gap-x-2 hover:bg-zinc-600 p-2 px-2.5 rounded-t-md border-b border-gray-500"
+                                                        >
+                                                            <IoInformationCircle
+                                                                size={20}
+                                                            />
+                                                            <span>Detail</span>
+                                                        </Link>
+                                                        <Link
+                                                            to={`${ROUTE_PATHS.USER_EMPLOYEE_EDIT}/${employee.id}`}
+                                                            className="flex items-center gap-x-2 p-2 px-2.5 hover:bg-zinc-600 border-b border-gray-500"
+                                                        >
+                                                            <BiEdit size={20} />
+                                                            <span>Edit</span>
+                                                        </Link>
+                                                        <div className="flex items-center gap-x-2 p-2 px-2.5 cursor-pointer hover:bg-zinc-600">
+                                                            <BiTrash
+                                                                size={20}
+                                                            />
+                                                            <span>Delete</span>
+                                                        </div>
                                                     </div>
                                                 )}
                                             </div>

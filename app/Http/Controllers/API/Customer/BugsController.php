@@ -14,11 +14,8 @@ class BugsController extends Controller
 {
     public function index($projectId)
     {
-        $project_id = Project::all();
-
-        // $projectId = $projectId || $project_id;
-        // $bugs = Bug::where('project_id', $projectId)->get();
-        return response()->json("id");
+        $bugs = Bug::where('project_id', $projectId)->get();
+        return response()->json($bugs);
     }
 
     public function create(Request $request)

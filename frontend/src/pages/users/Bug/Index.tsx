@@ -1,15 +1,20 @@
 import { Button } from "@/components/ui/button";
 import { ROUTE_PATHS } from "@/constants/ROUTE_PATHS";
 import { useAppDispatch, useAppSelector } from "@/store";
-import { BiMenuAltLeft } from "react-icons/bi";
+import { BiEdit, BiMenuAltLeft, BiTrash } from "react-icons/bi";
 import { Link } from "react-router-dom";
 import { toggleAction } from "../../../store/activeActionReducer";
+import { IoInformationCircle } from "react-icons/io5";
 
 const Bug = () => {
     const dispatch = useAppDispatch();
     const actionId = useAppSelector((state) => state.activeAction.id);
 
-    const handleActionToggle = (id: string) => {
+    const handleActionToggle = (
+        id: string,
+        e: React.MouseEvent<SVGElement>
+    ) => {
+        e.stopPropagation();
         dispatch(toggleAction({ id: actionId === id ? undefined : id }));
     };
 
@@ -36,10 +41,10 @@ const Bug = () => {
                             <th className="py-2 text-zinc-300 border border-solid border-zinc-600">
                                 Phone
                             </th>
-                            <th className="py-2 text-zinc-300 border-l border-b border-solid border-zinc-600 rounded-tr-lg">
+                            <th className="py-2 text-zinc-300 border-b border-solid border-zinc-600">
                                 Address
                             </th>
-                            <th className="py-2 text-zinc-300 border-l border-b border-solid border-zinc-600 rounded-tr-lg">
+                            <th className="py-2 text-zinc-300 border-l border-b border-solid border-zinc-600 rounded-tr-lg text-center">
                                 Action
                             </th>
                         </tr>
@@ -58,120 +63,44 @@ const Bug = () => {
                             <td className="text-zinc-300 border border-solid border-zinc-600 text-sm">
                                 123 Main St, City, State, 12345
                             </td>
-                            <td className="text-zinc-300 border border-solid border-zinc-600 text-sm">
-                                <div className="flex justify-center items-center relative">
+                            <td className="text-zinc-300 border border-solid border-zinc-600 text-sm relative">
+                                <div className="flex justify-center items-center absolute left-1/2 top-1/2 transform -translate-y-1/2 -translate-x-1/2">
                                     <BiMenuAltLeft
                                         size={20}
                                         className="cursor-pointer"
-                                        onClick={(e) => {
-                                            e.stopPropagation();
-                                            handleActionToggle("4");
-                                        }}
-                                    />
-                                    {actionId == "4" && (
-                                        <div className="bg-zinc-700 w-28 h-32 absolute top-2 right-14 rounded-md p-2 px-2.5">
-                                            <div>Detail</div>
-                                            <div>Edit</div>
-                                            <div>Delete</div>
-                                        </div>
-                                    )}
-                                </div>
-                            </td>
-                        </tr>
-                        <tr className="hover:bg-zinc-700">
-                            <td className="text-zinc-300 border border-solid border-zinc-600 text-sm">
-                                Sample Company 1
-                            </td>
-                            <td className="text-zinc-300 border border-solid border-zinc-600 text-sm">
-                                sample@company.com
-                            </td>
-                            <td className="text-zinc-300 border border-solid border-zinc-600 text-sm">
-                                123-456-7890
-                            </td>
-                            <td className="text-zinc-300 border border-solid border-zinc-600 text-sm">
-                                123 Main St, City, State, 12345
-                            </td>
-                            <td className="text-zinc-300 border border-solid border-zinc-600 text-sm">
-                                <div className="flex justify-center items-center relative">
-                                    <BiMenuAltLeft
-                                        size={20}
-                                        className="cursor-pointer"
-                                        onClick={(e) => {
-                                            e.stopPropagation();
-                                            handleActionToggle("3");
-                                        }}
-                                    />
-                                    {actionId == "3" && (
-                                        <div className="bg-zinc-700 w-28 h-32 absolute top-2 right-14 rounded-md p-2 px-2.5">
-                                            <div>Detail</div>
-                                            <div>Edit</div>
-                                            <div>Delete</div>
-                                        </div>
-                                    )}
-                                </div>
-                            </td>
-                        </tr>
-                        <tr className="hover:bg-zinc-700">
-                            <td className="text-zinc-300 border border-solid border-zinc-600 text-sm">
-                                Sample Company 1
-                            </td>
-                            <td className="text-zinc-300 border border-solid border-zinc-600 text-sm">
-                                sample@company.com
-                            </td>
-                            <td className="text-zinc-300 border border-solid border-zinc-600 text-sm">
-                                123-456-7890
-                            </td>
-                            <td className="text-zinc-300 border border-solid border-zinc-600 text-sm">
-                                123 Main St, City, State, 12345
-                            </td>
-                            <td className="text-zinc-300 border border-solid border-zinc-600 text-sm">
-                                <div className="flex justify-center items-center relative">
-                                    <BiMenuAltLeft
-                                        size={20}
-                                        className="cursor-pointer"
-                                        onClick={(e) => {
-                                            e.stopPropagation();
-                                            handleActionToggle("2");
-                                        }}
-                                    />
-                                    {actionId === "2" && (
-                                        <div className="bg-zinc-700 w-28 h-32 absolute top-2 right-14 rounded-md p-2 px-2.5">
-                                            <div>Detail</div>
-                                            <div>Edit</div>
-                                            <div>Delete</div>
-                                        </div>
-                                    )}
-                                </div>
-                            </td>
-                        </tr>
-                        <tr className="hover:bg-zinc-700">
-                            <td className="text-zinc-300 border border-solid border-zinc-600 text-sm">
-                                Sample Company 1
-                            </td>
-                            <td className="text-zinc-300 border border-solid border-zinc-600 text-sm">
-                                sample@company.com
-                            </td>
-                            <td className="text-zinc-300 border border-solid border-zinc-600 text-sm">
-                                123-456-7890
-                            </td>
-                            <td className="text-zinc-300 border border-solid border-zinc-600 text-sm">
-                                123 Main St, City, State, 12345
-                            </td>
-                            <td className="text-zinc-300 border border-solid border-zinc-600 text-sm">
-                                <div className="flex justify-center items-center relative">
-                                    <BiMenuAltLeft
-                                        size={20}
-                                        className="cursor-pointer"
-                                        onClick={(e) => {
-                                            e.stopPropagation();
-                                            handleActionToggle("1");
-                                        }}
+                                        onClick={(e) =>
+                                            handleActionToggle("1", e)
+                                        }
                                     />
                                     {actionId == "1" && (
-                                        <div className="bg-zinc-700 w-28 h-32 absolute top-2 right-14 rounded-md p-2 px-2.5">
-                                            <div>Detail</div>
-                                            <div>Edit</div>
-                                            <div>Delete</div>
+                                        <div
+                                            className="bg-zinc-700 w-28 h-28 absolute top-4 right-4 rounded-md select-none border border-zinc-500"
+                                            onClick={(e) => e.stopPropagation()}
+                                        >
+                                            <Link
+                                                to={`${
+                                                    ROUTE_PATHS.USER_BUG_DETAIL
+                                                }/${"1"}`}
+                                                className="flex items-center gap-x-2 hover:bg-zinc-600 p-2 px-2.5 rounded-t-md border-b border-gray-500"
+                                            >
+                                                <IoInformationCircle
+                                                    size={20}
+                                                />
+                                                <span>Detail</span>
+                                            </Link>
+                                            <Link
+                                                to={`${
+                                                    ROUTE_PATHS.USER_BUG_EDIT
+                                                }/${""}`}
+                                                className="flex items-center gap-x-2 p-2 px-2.5 hover:bg-zinc-600 border-b border-gray-500"
+                                            >
+                                                <BiEdit size={20} />
+                                                <span>Edit</span>
+                                            </Link>
+                                            <div className="flex items-center gap-x-2 p-2 px-2.5 cursor-pointer hover:bg-zinc-600">
+                                                <BiTrash size={20} />
+                                                <span>Delete</span>
+                                            </div>
                                         </div>
                                     )}
                                 </div>

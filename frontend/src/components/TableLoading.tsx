@@ -12,37 +12,50 @@ const TableLoading: React.FC<TableSkeletonProps> = ({
     numberOfTableColumns,
 }) => {
     return (
-        <SkeletonTheme baseColor="#313131" highlightColor="#525252">
-            <table className="bg-zinc-800">
+        <SkeletonTheme baseColor="#404040" highlightColor="#707070">
+            <table className="w-full bg-zinc-900 border-collapse">
                 <thead>
-                    <tr className="bg-zinc-600">
-                        {Array.from({ length: numberOfTableColumns }).map(
+                    <tr className="bg-zinc-700">
+                        {Array.from({ length: numberOfRows }).map(
                             (_, colIndex) => (
                                 <th
-                                    className="py-2 text-zinc-300 border border-solid border-zinc-600"
+                                    className="py-3 px-4 text-zinc-300 border-b border-zinc-600"
                                     key={colIndex}
                                 >
-                                    <Skeleton className="h-6 w-full" />
+                                    <Skeleton className="h-4 w-3/4 rounded-md" />
                                 </th>
                             )
                         )}
                     </tr>
                 </thead>
                 <tbody>
-                    {Array.from({ length: numberOfRows }).map((_, rowIndex) => (
-                        <tr className="hover:bg-zinc-700" key={rowIndex}>
-                            {Array.from({ length: numberOfTableColumns }).map(
-                                (_, colIndex) => (
-                                    <td
-                                        className="text-zinc-300 border border-solid border-zinc-600 text-sm"
-                                        key={colIndex}
-                                    >
-                                        <Skeleton className="h-6 w-full" />
-                                    </td>
-                                )
-                            )}
-                        </tr>
-                    ))}
+                    {Array.from({ length: numberOfTableColumns }).map(
+                        (_, rowIndex) => (
+                            <tr className="hover:bg-zinc-800" key={rowIndex}>
+                                {Array.from({ length: numberOfRows }).map(
+                                    (_, colIndex) => (
+                                        <td
+                                            className="text-zinc-300 border-t border-zinc-600 py-2 px-4 text-sm"
+                                            key={colIndex}
+                                        >
+                                            <Skeleton
+                                                className="h-4 rounded-md"
+                                                width={
+                                                    colIndex === 0
+                                                        ? "60%"
+                                                        : colIndex ===
+                                                          numberOfTableColumns -
+                                                              1
+                                                        ? "40%"
+                                                        : "90%"
+                                                }
+                                            />
+                                        </td>
+                                    )
+                                )}
+                            </tr>
+                        )
+                    )}
                 </tbody>
             </table>
         </SkeletonTheme>

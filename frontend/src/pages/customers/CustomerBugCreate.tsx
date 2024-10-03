@@ -101,8 +101,8 @@ const CustomerBugCreate = () => {
     };
 
     return (
-        <div className="flex justify-between items-start py-2">
-            <div className="py-1 pb-6 px-4 flex flex-col gap-y-2 w-1/4 bg-zinc-200">
+        <div className="flex flex-col lg:flex-row justify-between items-start py-2">
+            <div className="py-1 pb-6 px-4 flex flex-col gap-y-2 w-11/12 lg:w-1/4 bg-zinc-200">
                 <div className="flex items-center gap-x-2">
                     <Label htmlFor="status">Status</Label>
                     <Select
@@ -275,9 +275,10 @@ const CustomerBugCreate = () => {
                     <Button
                         className="w-28"
                         type="button"
+                        disabled={createBugMutation.isPending}
                         onClick={() => handleSave()}
                     >
-                        Save
+                        {createBugMutation.isPending ? "Saving..." : "Save"}
                     </Button>
                 </div>
             </div>
