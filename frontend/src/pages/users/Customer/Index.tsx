@@ -69,7 +69,7 @@ const Customer = () => {
                                             {customer.email}
                                         </td>
                                         <td className="text-zinc-300 border border-solid border-zinc-600 text-sm relative">
-                                            <div className="flex justify-center items-center absolute left-1/2 top-1/2 transform -translate-y-1/2 -translate-x-1/2">
+                                            <div className="flex justify-center items-center absolute left-1/2 top-1/2 transform -translate-y-1/2 -translate-x-1/2 z-10">
                                                 <BiMenuAltLeft
                                                     size={20}
                                                     className="cursor-pointer"

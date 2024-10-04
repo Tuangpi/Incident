@@ -124,7 +124,9 @@ const CreateEmployee = () => {
                         type="submit"
                         disabled={createEmployeeMutation.isPending}
                     >
-                        Save
+                        {createEmployeeMutation.isPending
+                            ? "Saving... "
+                            : "Save"}
                     </Button>
                 </div>
             </form>

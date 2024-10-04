@@ -30,8 +30,9 @@ import EditCustomer from "./pages/users/Customer/EditCustomer";
 import CreateCustomer from "./pages/users/Customer/CreateCustomer";
 import Customer from "./pages/users/Customer/Index";
 import CustomerBugCreate from "./pages/customers/CustomerBugCreate";
-import CustomerBugDetailEdit from "./pages/customers/CustomerBugDetailEdit";
+import CustomerBugDetail from "./pages/customers/CustomerBugDetail";
 import CustomerDashboard from "./pages/customers/CustomerDashboard";
+import CustomerBugEdit from "./pages/customers/CustomerBugEdit";
 
 const router = createBrowserRouter([
     {
@@ -65,8 +66,12 @@ const router = createBrowserRouter([
                 element: <CustomerBugCreate />,
             },
             {
-                path: ROUTE_PATHS.CUSTOMER_BUG_DETAIL_EDIT,
-                element: <CustomerBugDetailEdit />,
+                path: ROUTE_PATHS.CUSTOMER_BUG_DETAIL + "/:id",
+                element: <CustomerBugDetail />,
+            },
+            {
+                path: ROUTE_PATHS.CUSTOMER_BUG_EDIT + "/:id",
+                element: <CustomerBugEdit />,
             },
         ],
     },

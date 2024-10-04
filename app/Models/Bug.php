@@ -14,4 +14,9 @@ class Bug extends Model
     {
         return $this->belongsTo(Project::class);
     }
+
+    public function reported_by()
+    {
+        return $this->belongsTo(Customer::class, 'reported_by_id');
+    }
 }

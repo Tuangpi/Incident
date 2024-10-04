@@ -5,7 +5,7 @@ interface selectProjectState {
 }
 
 const initialState: selectProjectState = {
-    id: ""
+    id: "all"
 };
 
 const selectProjectSlice = createSlice({

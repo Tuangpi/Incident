@@ -49,6 +49,12 @@ class ProjectController extends Controller
         return response()->json(['message' => 'Project created successfully']);
     }
 
+    public function get_project($id)
+    {
+        $project = Project::findOrFail($id);
+        return response()->json($project);
+    }
+
     public function update(Request $request, $id)
     {
         $inputs = Validator::make($request->all(), [
@@ -68,11 +74,11 @@ class ProjectController extends Controller
         if ($request->hasFile('logo')) {
             $logo = $request->file('logo');
             $logo_name = time() . "_" . $logo->getClientOriginalName();
-            if (!Storage::exists('public/uploads/projectLogo')) {
-                Storage::makeDirectory('public/uploads/projectLogo');
+            if (!Storage::exists('uploads/projectLogo')) {
+                Storage::makeDirectory('uploads/projectLogo');
             }
 
-            $logo->storeAs('public/uploads/projectLogo', $logo_name);
+            $logo->storeAs('uploads/projectLogo', $logo_name);
 
             $project->logo = $logo_name;
         }

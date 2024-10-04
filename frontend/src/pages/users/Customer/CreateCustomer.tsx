@@ -124,7 +124,9 @@ const CreateCustomer = () => {
                         type="submit"
                         disabled={createCustomerMutation.isPending}
                     >
-                        Save
+                        {createCustomerMutation.isPending
+                            ? "Saving... "
+                            : "Save"}
                     </Button>
                 </div>
             </form>

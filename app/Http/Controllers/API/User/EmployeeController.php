@@ -41,6 +41,12 @@ class EmployeeController extends Controller
         return response()->json(['message' => 'Employee created successfully']);
     }
 
+    public function get_employee($id)
+    {
+        $employee = User::findOrFail($id);
+        return response()->json($employee);
+    }
+
     public function update(Request $request, $id)
     {
         $inputs = Validator::make($request->all(), [

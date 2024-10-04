@@ -45,11 +45,17 @@ export interface Bug {
     status: string
     severity: string
     priority: string
+    progress: number
+    link: string
     due_date: string
     reported_by_id: string
+    bug_type_id: string
     assign_to_id: string
     project_id: string
     resolution: string
     created_at: string
     updated_at: string;
+
+    project: Project
+    reported_by: Customer
 }

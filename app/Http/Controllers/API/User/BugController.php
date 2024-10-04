@@ -11,7 +11,11 @@ class BugController extends Controller
 {
     public function index()
     {
-        $bugs = Bug::all();
+        $bugs = Bug::with(['project' => function ($q) {
+            $q->select('id', 'name');
+        }, 'reported_by' => function ($q) {
+            $q->select('id', 'email');
+        }])->get();
         return response()->json($bugs);
     }
 
@@ -19,44 +23,40 @@ class BugController extends Controller
     {
         $inputs = Validator::make($request->all(), [
             'companyId' => 'required',
-            'email' => 'required|email',
-            'password' => 'required',
         ]);
 
         if ($inputs->fails()) {
             return response()->json(['message' => $inputs->errors()], 422);
         }
 
-        $customer = new Customer();
+        $customer = new Bug();
         $customer->company_id = $request->companyId;
-        $customer->email = $request->email;
-        $customer->email_verified_at = now();
-        $customer->password = Hash::make($request->password);
         $customer->save();
 
-        return response()->json(['message' => 'Customer created successfully']);
+        return response()->json(['message' => 'Bug created successfully']);
+    }
+
+    public function get_bug($id)
+    {
+        $bug = Bug::findOrFail($id);
+        return response()->json($bug);
     }
 
     public function update(Request $request, $id)
     {
         $inputs = Validator::make($request->all(), [
             'companyId' => 'required',
-            'email' => 'required|email',
         ]);
 
         if ($inputs->fails()) {
             return response()->json(['message' => $inputs->errors()], 422);
         }
 
-        $customer = Customer::findOrFail($id);
+        $customer = Bug::findOrFail($id);
         $customer->company_id = $request->companyId;
-        $customer->email = $request->email;
-        if ($request->password) {
-            $customer->password = Hash::make($request->password);
-        }
         $customer->save();
 
-        return response()->json(['message' => 'Customer updated successfully']);
+        return response()->json(['message' => 'bug updated successfully']);
     }
 
     public function delete($id)

@@ -38,6 +38,12 @@ class CustomerController extends Controller
         return response()->json(['message' => 'Customer created successfully']);
     }
 
+    public function get_customer($id)
+    {
+        $customer = Customer::findOrFail($id);
+        return response()->json($customer);
+    }
+
     public function update(Request $request, $id)
     {
         $inputs = Validator::make($request->all(), [

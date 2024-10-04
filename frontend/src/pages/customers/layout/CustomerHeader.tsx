@@ -16,7 +16,8 @@ import { Project } from "@/types";
 import { useQuery } from "@tanstack/react-query";
 import { Link, Navigate, useLocation } from "react-router-dom";
 import { setSelectProject } from "./store/selectProjectReducer";
-import { useEffect } from "react";
+import { RxDashboard } from "react-icons/rx";
+import { BiLayerPlus, BiListOl } from "react-icons/bi";
 
 const CustomerHeader = () => {
     const { logout } = useAuth();
@@ -36,10 +37,6 @@ const CustomerHeader = () => {
             .catch((error) => console.log(error));
     };
 
-    useEffect(() => {
-        if (projects) dispatch(setSelectProject({ id: projects[0].id }));
-    }, [projects]);
-
     return (
         <>
             <div className="w-full h-16 bg-stone-800 flex flex-col justify-center text-primary">
@@ -57,34 +54,37 @@ const CustomerHeader = () => {
                 <div className="flex justify-between items-center text-zinc-200 gap-x-2">
                     <Link
                         to={ROUTE_PATHS.CUSTOMER_DASHBOARD}
-                        className={`block rounded-t-md px-2 py-1 text-sm ${
+                        className={`flex items-center gap-x-1 rounded-t-md px-2 py-1 text-sm ${
                             location.pathname.includes("dashboard")
                                 ? "bg-[#5F9729]"
                                 : "bg-zinc-700 hover:bg-zinc-900"
                         }`}
                     >
-                        Dashboard
+                        <RxDashboard size={16} />
+                        <span>Overview</span>
                     </Link>
                     <Link
                         to={ROUTE_PATHS.CUSTOMER_BUG_LISTS}
-                        className={`block rounded-t-md px-2 py-1 text-sm ${
+                        className={`flex items-center gap-x-1 rounded-t-md px-2 py-1 text-sm ${
                             location.pathname.endsWith("bug-lists")
                                 ? "bg-[#5F9729]"
                                 : "bg-zinc-700 hover:bg-zinc-900"
                         }`}
                     >
-                        Bug Lists
+                        <BiListOl size={20} />
+                        <span>Bug Lists</span>
                     </Link>
-                    {selectedProject && (
+                    {selectedProject !== "all" && (
                         <Link
                             to={ROUTE_PATHS.CUSTOMER_BUG_CREATE}
-                            className={`block rounded-t-md px-2 py-1 text-sm ${
+                            className={`flex items-center gap-x-1 rounded-t-md px-2 py-1 text-sm ${
                                 location.pathname.includes("create")
                                     ? "bg-[#5F9729]"
                                     : "bg-zinc-700 hover:bg-zinc-900"
                             }`}
                         >
-                            Create Bug
+                            <BiLayerPlus size={20} />
+                            <span>Create Bug</span>
                         </Link>
                     )}
                 </div>
@@ -100,6 +100,7 @@ const CustomerHeader = () => {
                     <SelectContent className="bg-gray-700 text-zinc-300">
                         <SelectGroup>
                             <SelectLabel>Select Project</SelectLabel>
+                            <SelectItem value="all">All Projects</SelectItem>
                             {projects?.map((project) => (
                                 <SelectItem key={project.id} value={project.id}>
                                     {project.name}

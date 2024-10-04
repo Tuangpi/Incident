@@ -21,6 +21,7 @@ return new class extends Migration
             $table->enum('severity', ["LOW", "MEDIUM", "HIGH", "CRITICAL"])->nullable()->comment('LOW, MEDIUM, HIGH, CRITICAL');
             $table->enum('priority', ["LOW", "MEDIUM", "HIGH", "URGENT"])->nullable()->comment('LOW, MEDIUM, HIGH, URGENT');
             $table->dateTime('due_date')->nullable();
+            $table->integer('progress')->default(0);
 
             $table->foreignUlid('bug_types_id')->nullable()->constrained('bug_types')->cascadeOnDelete();
 
