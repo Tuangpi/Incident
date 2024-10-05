@@ -9,13 +9,35 @@ use Illuminate\Support\Facades\Validator;
 
 class BugController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $bugs = Bug::with(['project' => function ($q) {
-            $q->select('id', 'name');
-        }, 'reported_by' => function ($q) {
-            $q->select('id', 'email');
-        }])->get();
+        $company = $request->company;
+        $project = $request->project;
+        $bugType = $request->bugType;
+        $status = $request->status;
+        $severity = $request->severity;
+        $priority = $request->priority;
+        $employee = $request->employee;
+
+        $bugs = Bug::when($company !== "all", function ($q) use ($company) {
+            $q->whereHas('project', function ($query) use ($company) {
+                $query->where('company_id', $company);
+            });
+        })->when($project !== "all", function ($q) use ($project) {
+            $q->where('project_id', $project);
+        })->when($bugType !== "all", function ($q) use ($bugType) {
+            $q->where('bug_types_id', $bugType);
+        })->when($status !== "all", function ($q) use ($status) {
+            $q->where('status', $status);
+        })->when($severity !== "all", function ($q) use ($severity) {
+            $q->where('severity', $severity);
+        })->when($priority !== "all", function ($q) use ($priority) {
+            $q->where('priority', $priority);
+        })->when($employee !== "all", function ($q) use ($employee) {
+            $q->where('assigned_to_id', $employee);
+        })->with((['project:id,name', 'reported_by:id,email']))
+            ->get();
+
         return response()->json($bugs);
     }
 

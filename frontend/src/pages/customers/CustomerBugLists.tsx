@@ -7,10 +7,9 @@ import { Bug } from "@/types";
 import { useQuery } from "@tanstack/react-query";
 import { BiCheckCircle, BiEdit, BiMenuAltLeft } from "react-icons/bi";
 import { IoInformationCircle } from "react-icons/io5";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 const CustomerBugLists = () => {
-    const navigate = useNavigate();
     const dispatch = useAppDispatch();
 
     const actionId = useAppSelector((state) => state.activeAction.id);
@@ -90,7 +89,7 @@ const CustomerBugLists = () => {
                                                 />
                                                 {actionId == bug.id && (
                                                     <div
-                                                        className="bg-white w-28 h-28 absolute top-4 right-4 rounded-md select-none border border-zinc-300"
+                                                        className="bg-white w-28 max-h-28 absolute top-4 right-4 rounded-md select-none border border-zinc-300"
                                                         onClick={(e) =>
                                                             e.stopPropagation()
                                                         }

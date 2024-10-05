@@ -14,4 +14,9 @@ class Company extends Model
     {
         return $this->hasMany(Project::class);
     }
+
+    public function bugs()
+    {
+        return $this->hasManyThrough(Bug::class, Project::class, 'company_id', 'project_id');
+    }
 }

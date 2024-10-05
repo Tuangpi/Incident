@@ -5,7 +5,6 @@ import { ROUTE_PATHS } from "@/constants/ROUTE_PATHS";
 import { customerShowBug } from "@/lib/customerBugClientAPI";
 import { Bug } from "@/types";
 import { useQuery } from "@tanstack/react-query";
-import { BiUserCircle, BiUserX } from "react-icons/bi";
 import { FaUserTie } from "react-icons/fa6";
 import { Link, useParams } from "react-router-dom";
 

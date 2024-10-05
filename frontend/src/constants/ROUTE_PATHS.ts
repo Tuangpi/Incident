@@ -32,6 +32,10 @@ export const ROUTE_PATHS = {
     USER_PROJECT_EDIT: "/user/project-lists/edit",
     USER_PROJECT_DETAIL: "/user/project-lists/detail",
 
+    USER_BUG_TYPE_LISTS: "/user/bugs-type-lists",
+    USER_BUG_TYPE_CREATE: "/user/bugs-type-lists/create",
+    USER_BUG_TYPE_EDIT: "/user/bugs-type-lists/edit",
+
     USER_BUG_LISTS: "/user/bugs-lists",
     USER_BUG_CREATE: "/user/bugs-lists/create",
     USER_BUG_EDIT: "/user/bugs-lists/edit",

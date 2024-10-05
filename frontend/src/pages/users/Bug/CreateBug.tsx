@@ -93,14 +93,22 @@ const CreateBug = () => {
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
-        // if (selectedRole) {
-        //     createBugMutation.mutate({
-        //         name,
-        //         email,
-        //         password,
-        //         role: selectedRole,
-        //     });
-        // }
+        if (selectedProject) {
+            createBugMutation.mutate({
+                image,
+                assign_to: "",
+                description,
+                due_date: "",
+                priority,
+                project_id: selectedProject,
+                reported_by: "",
+                resolution: "",
+                status,
+                severity,
+                title,
+                type,
+            });
+        }
     };
 
     return (

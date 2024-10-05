@@ -100,7 +100,7 @@ const Company = () => {
                                                 />
                                                 {actionId == company.id && (
                                                     <div
-                                                        className="bg-zinc-700 w-28 h-auto absolute top-4 right-4 rounded-md select-none border border-zinc-500" // Added z-10
+                                                        className="bg-zinc-700 w-28 max-h-auto absolute top-4 right-4 rounded-md select-none border border-zinc-500" // Added z-10
                                                         onClick={(e) =>
                                                             e.stopPropagation()
                                                         }

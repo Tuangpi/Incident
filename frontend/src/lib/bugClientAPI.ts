@@ -1,9 +1,77 @@
 import axiosInstance from "./axiosInstance";
 import { delayFetch } from "./utils";
 
-export const fetchAllBugs = async () => {
+export const fetchAllBugTypes = async () => {
     return delayFetch(async () => {
-        const res = await axiosInstance.get(`/bug`);
+        const res = await axiosInstance.get(`/bug-types`);
+
+        if (res.status === 200) return res.data;
+        throw new Error("Error: Check Network Log");
+    }, 2000)
+}
+
+export const fetchBugType = async (id: string) => {
+    const res = await axiosInstance.get(`/bug-types/${id}`);
+
+    if (res.status === 200) return res.data;
+    throw new Error("Error: Check Network Log");
+}
+
+export const createBugTypes = async ({
+    name, }: {
+        name: string,
+    }) => {
+
+    const res = await axiosInstance.post(`/bug-types/create`, {
+        name,
+    });
+
+    if (res.status === 200) return res.data;
+    throw new Error("Error: Check Network Log");
+};
+
+export const updateBugType = async ({
+    id,
+    name, }: {
+        id: string,
+        name: string,
+    }) => {
+
+    const res = await axiosInstance.put(`/bug-types/update/${id}`, {
+        name,
+    });
+
+    if (res.status === 200) return res.data;
+    throw new Error("Error: Check Network Log");
+};
+
+export const fetchAllBugs = async ({ companyFilter,
+    projectFilter,
+    bugTypeFilter,
+    statusFilter,
+    severityFilter,
+    priorityFilter,
+    employeeFilter }: {
+        companyFilter: string,
+        projectFilter: string,
+        bugTypeFilter: string,
+        statusFilter: string,
+        severityFilter: string,
+        priorityFilter: string,
+        employeeFilter: string,
+    }) => {
+    const queryParams = new URLSearchParams({
+        company: companyFilter,
+        project: projectFilter,
+        bugType: bugTypeFilter,
+        status: statusFilter,
+        severity: severityFilter,
+        priority: priorityFilter,
+        employee: employeeFilter,
+    }).toString();
+
+    return delayFetch(async () => {
+        const res = await axiosInstance.get(`/bug?${queryParams}`);
 
         if (res.status === 200) return res.data;
         throw new Error("Error: Check Network Log");

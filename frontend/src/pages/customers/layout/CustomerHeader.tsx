@@ -17,7 +17,8 @@ import { useQuery } from "@tanstack/react-query";
 import { Link, Navigate, useLocation } from "react-router-dom";
 import { setSelectProject } from "./store/selectProjectReducer";
 import { RxDashboard } from "react-icons/rx";
-import { BiLayerPlus, BiListOl } from "react-icons/bi";
+import { BiListOl } from "react-icons/bi";
+import { IoBug } from "react-icons/io5";
 
 const CustomerHeader = () => {
     const { logout } = useAuth();
@@ -83,7 +84,7 @@ const CustomerHeader = () => {
                                     : "bg-zinc-700 hover:bg-zinc-900"
                             }`}
                         >
-                            <BiLayerPlus size={20} />
+                            <IoBug size={20} />
                             <span>Create Bug</span>
                         </Link>
                     )}

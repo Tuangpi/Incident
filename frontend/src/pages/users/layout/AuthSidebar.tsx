@@ -1,5 +1,6 @@
 import logo from "@/assets/react.svg";
 import { ROUTE_PATHS } from "@/constants/ROUTE_PATHS";
+import { BiBug } from "react-icons/bi";
 import {
     TbBuildingBank,
     TbDashboard,
@@ -104,9 +105,22 @@ const AuthSidebar = () => {
                     Manage Bugs
                 </div>
                 <Link
+                    to={ROUTE_PATHS.USER_BUG_TYPE_LISTS}
+                    className={`mt-2 px-6 py-2 rounded-l-md flex justify-center lg:justify-start items-center gap-x-2 text-gray-light ${
+                        location.pathname.includes("bugs-type-lists")
+                            ? "bg-zinc-800 text-gray-300"
+                            : "hover:text-gray-300 hover:bg-zinc-800"
+                    }`}
+                >
+                    <BiBug size={23} />
+                    <span className="hidden lg:block text-[15px]">
+                        Bugs Types
+                    </span>
+                </Link>
+                <Link
                     to={ROUTE_PATHS.USER_BUG_LISTS}
                     className={`mt-2 px-6 py-2 rounded-l-md flex justify-center lg:justify-start items-center gap-x-2 text-gray-light ${
-                        location.pathname.includes("bug")
+                        location.pathname.includes("bugs-lists")
                             ? "bg-zinc-800 text-gray-300"
                             : "hover:text-gray-300 hover:bg-zinc-800"
                     }`}

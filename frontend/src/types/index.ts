@@ -34,6 +34,8 @@ export interface Project {
     description: string
     created_at: string
     updated_at: string;
+
+    company: Company
 }
 
 export interface Bug {
@@ -58,4 +60,11 @@ export interface Bug {
 
     project: Project
     reported_by: Customer
+}
+
+export interface BugType {
+    id: string;
+    name: string;
+    created_at: string
+    updated_at: string;
 }

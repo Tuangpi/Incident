@@ -5,6 +5,7 @@ use App\Http\Controllers\API\Auth\UserAuthController;
 use App\Http\Controllers\API\Customer\BugsController;
 use App\Http\Controllers\API\Customer\ProjectController as CustomerProjectController;
 use App\Http\Controllers\API\User\BugController;
+use App\Http\Controllers\API\User\BugTypeController;
 use App\Http\Controllers\API\User\CompanyController;
 use App\Http\Controllers\API\User\CustomerController;
 use App\Http\Controllers\API\User\DashboardController;
@@ -40,6 +41,12 @@ Route::group(['middleware' => ['auth.user']], function () {
     Route::get('/project/{id}', [ProjectController::class, 'get_project']);
     Route::post('/project/update/{id}', [ProjectController::class, 'update']);
     Route::delete('/project/delete/{id}', [ProjectController::class, 'delete']);
+
+    Route::get('/bug-types', [BugTypeController::class, 'index']);
+    Route::post('/bug-types/create', [BugTypeController::class, 'create']);
+    Route::get('/bug-types/{id}', [BugTypeController::class, 'get_bug_type']);
+    Route::put('/bug-types/update/{id}', [BugTypeController::class, 'update']);
+    Route::delete('/bug-types/delete/{id}', [BugTypeController::class, 'delete']);
 
     Route::get('/bug', [BugController::class, 'index']);
     Route::post('/bug/create', [BugController::class, 'create']);

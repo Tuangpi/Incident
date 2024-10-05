@@ -33,6 +33,9 @@ import CustomerBugCreate from "./pages/customers/CustomerBugCreate";
 import CustomerBugDetail from "./pages/customers/CustomerBugDetail";
 import CustomerDashboard from "./pages/customers/CustomerDashboard";
 import CustomerBugEdit from "./pages/customers/CustomerBugEdit";
+import CreateBugType from "./pages/users/BugType/CreateBugType";
+import EditBugType from "./pages/users/BugType/EditBugType";
+import BugType from "./pages/users/BugType/Index";
 
 const router = createBrowserRouter([
     {
@@ -160,6 +163,18 @@ const router = createBrowserRouter([
             {
                 path: ROUTE_PATHS.USER_PROJECT_DETAIL + "/:id",
                 element: <ProjectDetail />,
+            },
+            {
+                path: ROUTE_PATHS.USER_BUG_TYPE_LISTS,
+                element: <BugType />,
+            },
+            {
+                path: ROUTE_PATHS.USER_BUG_TYPE_CREATE,
+                element: <CreateBugType />,
+            },
+            {
+                path: ROUTE_PATHS.USER_BUG_TYPE_EDIT + "/:id",
+                element: <EditBugType />,
             },
             {
                 path: ROUTE_PATHS.USER_BUG_LISTS,

@@ -94,7 +94,7 @@ const Employee = () => {
                                                 />
                                                 {actionId == employee.id && (
                                                     <div
-                                                        className="bg-zinc-700 w-28 h-28 absolute top-4 right-4 rounded-md select-none border border-zinc-500"
+                                                        className="bg-zinc-700 w-28 max-h-28 absolute top-4 right-4 rounded-md select-none border border-zinc-500"
                                                         onClick={(e) =>
                                                             e.stopPropagation()
                                                         }

@@ -9,6 +9,7 @@ import { Project as ProjectType } from "@/types";
 import { fetchAllProjects } from "@/lib/clientAPI";
 import TableLoading from "@/components/TableLoading";
 import { IoInformationCircle } from "react-icons/io5";
+import { formatRelative } from "date-fns";
 
 const Project = () => {
     const dispatch = useAppDispatch();
@@ -48,6 +49,9 @@ const Project = () => {
                                     ID
                                 </th>
                                 <th className="py-2 text-zinc-300 border border-solid border-zinc-600">
+                                    Company
+                                </th>
+                                <th className="py-2 text-zinc-300 border border-solid border-zinc-600">
                                     Name
                                 </th>
                                 <th className="py-2 text-zinc-300 border border-solid border-zinc-600">
@@ -72,13 +76,19 @@ const Project = () => {
                                             {i + 1}
                                         </td>
                                         <td className="text-zinc-300 border border-solid border-zinc-600 text-sm">
+                                            {project.company.name}
+                                        </td>
+                                        <td className="text-zinc-300 border border-solid border-zinc-600 text-sm">
                                             {project.name}
                                         </td>
                                         <td className="text-zinc-300 border border-solid border-zinc-600 text-sm">
                                             {project.logo}
                                         </td>
                                         <td className="text-zinc-300 border border-solid border-zinc-600 text-sm">
-                                            {project.created_at}
+                                            {formatRelative(
+                                                new Date(project.created_at),
+                                                new Date()
+                                            )}
                                         </td>
                                         <td className="text-zinc-300 border border-solid border-zinc-600 text-sm relative">
                                             <div className="flex justify-center items-center absolute left-1/2 top-1/2 transform -translate-y-1/2 -translate-x-1/2">
@@ -130,7 +140,7 @@ const Project = () => {
                             ) : (
                                 <tr className="hover:bg-transparent">
                                     <td
-                                        colSpan={4}
+                                        colSpan={6}
                                         className="text-zinc-300 text-center text-base py-2"
                                     >
                                         no data

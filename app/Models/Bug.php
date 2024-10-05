@@ -19,4 +19,9 @@ class Bug extends Model
     {
         return $this->belongsTo(Customer::class, 'reported_by_id');
     }
+
+    public function company()
+    {
+        return $this->hasOneThrough(Company::class, Project::class, 'id', 'id', 'project_id', 'company_id');
+    }
 }
