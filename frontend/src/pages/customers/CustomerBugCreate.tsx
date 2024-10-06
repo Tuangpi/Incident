@@ -222,7 +222,7 @@ const CustomerBugCreate = () => {
                     />
                 </div>
                 <div className="mt-2">
-                    <Label htmlFor="image">File</Label>
+                    <Label htmlFor="image">Image</Label>
                     <Input
                         ref={fileInputRef}
                         type="file"
@@ -256,7 +256,7 @@ const CustomerBugCreate = () => {
                                     className="text-gray-400 group-hover:text-gray-600"
                                 />
                                 <p className="text-gray-400 group-hover:text-gray-600">
-                                    Upload file
+                                    Upload Image
                                 </p>
                             </div>
                         )}

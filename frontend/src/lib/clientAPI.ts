@@ -10,6 +10,15 @@ export const fetchDashboardData = async () => {
     }, 2000);
 }
 
+export const fetchCustomerDashboardData = async () => {
+    return await delayFetch(async () => {
+        const res = await axiosInstance.get(`/customer/dashboard`);
+
+        if (res.status === 200) return res.data;
+        throw new Error("Error: Check Network Log");
+    }, 2000);
+}
+
 export const fetchAllEmployees = async () => {
     return await delayFetch(async () => {
         const res = await axiosInstance.get(`/employee`);
@@ -134,7 +143,7 @@ export const fetchProject = async (id: string) => {
 
 export const customerFetchAllProjects = async () => {
     return await delayFetch(async () => {
-        const res = await axiosInstance.get(`/customer/project`);
+        const res = await axiosInstance.get(`/customer/project/index`);
 
         if (res.status === 200) return res.data;
         throw new Error("Error: Check Network Log");

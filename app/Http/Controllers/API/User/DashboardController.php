@@ -8,6 +8,7 @@ use App\Models\Customer;
 use App\Models\Project;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class DashboardController extends Controller
 {
@@ -24,5 +25,24 @@ class DashboardController extends Controller
             'customer_count' => $customer_count,
             'employee_count' => $employee_count
         ]);
+    }
+
+    public function customerIndex()
+    {
+        $projects = Project::select('id', 'name', 'updated_at')
+            ->where('company_id', Auth::guard('customer')->user()->company_id)
+            ->withCount([
+                'bugs as total_bugs',
+                'bugs as open_bugs_count' => function ($query) {
+                    $query->where('status', 'OPEN');
+                },
+                'bugs as resolved_bugs_count' => function ($query) {
+                    $query->where('status', 'RESOLVED');
+                }
+            ])
+            ->with('bugs:id,project_id,status,progress')
+            ->get();
+
+        return response()->json($projects);
     }
 }

@@ -18,7 +18,7 @@ class Customer
     {
         if (!Auth::guard('customer')->check()) {
             return response()->json([
-                'message' => 'Unauthorized, please log in.'
+                'message' => 'Unauthorized, please log in customer.'
             ], 401);
         }
         return $next($request);

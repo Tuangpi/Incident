@@ -13,6 +13,29 @@ use App\Http\Controllers\API\User\EmployeeController;
 use App\Http\Controllers\API\User\ProjectController;
 use Illuminate\Support\Facades\Route;
 
+Route::prefix('customer')->group(function () {
+    Route::post('/login', [CustomerAuthController::class, 'login']);
+
+    Route::group(['middleware' => ['auth.customer']], function () {
+        Route::get("/dashboard", [DashboardController::class, 'customerIndex']);
+
+        Route::prefix('project')->group(function () {
+            Route::get("/index", [CustomerProjectController::class, 'index']);
+        });
+
+        Route::prefix('bug')->group(function () {
+            Route::get('/{projectId}', [BugsController::class, 'index']);
+            Route::post('/create', [BugsController::class, 'create']);
+            Route::get('/show/{id}', [BugsController::class, 'show']);
+            Route::get('/edit/{id}', [BugsController::class, 'edit']);
+            Route::post('/update/{id}', [BugsController::class, 'update']);
+            Route::delete('/delete/{id}', [BugsController::class, 'delete']);
+        });
+        Route::post('/logout',  [CustomerAuthController::class, 'logout']);
+    });
+});
+
+
 Route::post('/login', [UserAuthController::class, 'login']);
 
 Route::group(['middleware' => ['auth.user']], function () {
@@ -55,24 +78,4 @@ Route::group(['middleware' => ['auth.user']], function () {
     Route::delete('/bug/delete/{id}', [BugController::class, 'delete']);
 
     Route::post('/logout', [UserAuthController::class, 'logout']);
-});
-
-Route::prefix('customer')->group(function () {
-    Route::post('/login', [CustomerAuthController::class, 'login']);
-
-    Route::group(['middleware' => ['auth.customer']], function () {
-        Route::prefix('project')->group(function () {
-            Route::get('/', [CustomerProjectController::class, 'index']);
-        });
-
-        Route::prefix('bug')->group(function () {
-            Route::get('/{projectId}', [BugsController::class, 'index']);
-            Route::post('/create', [BugsController::class, 'create']);
-            Route::get('/show/{id}', [BugsController::class, 'show']);
-            Route::get('/edit/{id}', [BugsController::class, 'edit']);
-            Route::post('/update/{id}', [BugsController::class, 'update']);
-            Route::delete('/delete/{id}', [BugsController::class, 'delete']);
-        });
-        Route::post('/logout',  [CustomerAuthController::class, 'logout']);
-    });
 });

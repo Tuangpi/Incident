@@ -19,6 +19,8 @@ import { setSelectProject } from "./store/selectProjectReducer";
 import { RxDashboard } from "react-icons/rx";
 import { BiListOl } from "react-icons/bi";
 import { IoBug } from "react-icons/io5";
+import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
+import "react-loading-skeleton/dist/skeleton.css";
 
 const CustomerHeader = () => {
     const { logout } = useAuth();
@@ -27,7 +29,7 @@ const CustomerHeader = () => {
 
     const selectedProject = useAppSelector((state) => state.selectProject.id);
 
-    const { data: projects } = useQuery<Project[]>({
+    const { data: projects, isLoading } = useQuery<Project[]>({
         queryKey: ["projects"],
         queryFn: customerFetchAllProjects,
     });
@@ -41,11 +43,38 @@ const CustomerHeader = () => {
     return (
         <>
             <div className="w-full h-16 bg-stone-800 flex flex-col justify-center text-primary">
-                <div className="flex justify-between items-center px-4">
-                    <div className="ml-8">
-                        <img alt="company logo" />
-                        <p>Company name</p>
-                    </div>
+                <div className="flex justify-between items-center px-4 mt-4">
+                    {isLoading ? (
+                        <SkeletonTheme
+                            baseColor="#323232"
+                            highlightColor="#525252"
+                        >
+                            <div className="ml-8 w-1/6">
+                                <Skeleton className="h-8" />
+                            </div>
+                        </SkeletonTheme>
+                    ) : (
+                        <>
+                            <div className="ml-8 flex justify-start items-center gap-x-2">
+                                {projects && projects?.length > 0 && (
+                                    <img
+                                        src={`${
+                                            import.meta.env.VITE_API_BASE_URL
+                                        }/storage/uploads/companyLogo/${
+                                            projects[0].company.logo
+                                        }`}
+                                        alt="company logo"
+                                        className="w-12 h-12"
+                                    />
+                                )}
+                                <h3 className="text-zinc-200">
+                                    {projects &&
+                                        projects?.length > 0 &&
+                                        projects[0].company.name}
+                                </h3>
+                            </div>
+                        </>
+                    )}
                     <Button variant="secondary" onClick={() => handleLogout()}>
                         Logout
                     </Button>
@@ -102,11 +131,16 @@ const CustomerHeader = () => {
                         <SelectGroup>
                             <SelectLabel>Select Project</SelectLabel>
                             <SelectItem value="all">All Projects</SelectItem>
-                            {projects?.map((project) => (
-                                <SelectItem key={project.id} value={project.id}>
-                                    {project.name}
-                                </SelectItem>
-                            ))}
+                            {isLoading
+                                ? "loading... "
+                                : projects?.map((project) => (
+                                      <SelectItem
+                                          key={project.id}
+                                          value={project.id}
+                                      >
+                                          {project.name}
+                                      </SelectItem>
+                                  ))}
                         </SelectGroup>
                     </SelectContent>
                 </Select>

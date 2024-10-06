@@ -11,7 +11,10 @@ class ProjectController extends Controller
 {
     public function index(Request $request)
     {
-        $projects =  Project::where('company_id', Auth::guard('customer')->user()->company_id)->get();
+        $projects =  Project::with(['company:id,name,logo'])
+            ->where('company_id', Auth::guard('customer')->user()->company_id)
+            ->get();
+
         return response()->json($projects);
     }
 }
