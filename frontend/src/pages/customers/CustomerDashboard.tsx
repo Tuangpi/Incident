@@ -3,7 +3,6 @@ import { fetchCustomerDashboardData } from "@/lib/clientAPI";
 import { Bug } from "@/types";
 import { useQuery } from "@tanstack/react-query";
 import { formatRelative } from "date-fns";
-import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
 
 interface DashboardState {
     id: string;

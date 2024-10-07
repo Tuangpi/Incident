@@ -3,11 +3,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { ROUTE_PATHS } from "@/constants/ROUTE_PATHS";
 import { toast } from "@/hooks/use-toast";
-import {
-    createBugTypes,
-    fetchBugType,
-    updateBugType,
-} from "@/lib/bugClientAPI";
+import { fetchBugType, updateBugType } from "@/lib/bugClientAPI";
 import { BugType } from "@/types";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import React, { useEffect, useState } from "react";

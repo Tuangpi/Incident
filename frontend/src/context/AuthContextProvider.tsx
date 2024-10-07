@@ -68,6 +68,8 @@ export const AuthContextProvider: React.FC<{ children: React.ReactNode }> = ({
                 setUser(undefined);
             })
             .catch((error) => {
+                localStorage.removeItem(import.meta.env.VITE_LOCAL_STORAGE_KEY);
+                setUser(undefined);
                 throw error;
             });
     };
