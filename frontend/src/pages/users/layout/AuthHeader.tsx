@@ -23,7 +23,7 @@ const AuthHeader = () => {
         <>
             {hamburger ? (
                 <div
-                    className="fixed top-0 left-0 bg-black bg-opacity-95 h-screen w-full text-white flex flex-col items-center justify-center p-4"
+                    className="fixed top-0 left-0 bg-black bg-opacity-95 h-screen w-full text-white flex flex-col items-center justify-center p-4 z-20"
                     onClick={() => dispatch(toggleHamburger({ isOpen: false }))}
                 >
                     <div className="mb-4" onClick={(e) => e.stopPropagation()}>

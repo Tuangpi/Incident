@@ -1,30 +1,20 @@
 import CustomerTableLoading from "@/components/CustomerTableLoading";
+import { TableActionCustomer } from "@/components/TableAction";
+import { TableCustomerCustomStyle } from "@/components/TableCustomStyle";
 import { ROUTE_PATHS } from "@/constants/ROUTE_PATHS";
 import { customerFetchAllBugs } from "@/lib/customerBugClientAPI";
-import { useAppDispatch, useAppSelector } from "@/store";
-import { toggleAction } from "@/store/activeActionReducer";
+import { useAppSelector } from "@/store";
 import { Bug } from "@/types";
 import { useQuery } from "@tanstack/react-query";
-import { BiCheckCircle, BiEdit, BiMenuAltLeft } from "react-icons/bi";
+import DataTable, { TableColumn } from "react-data-table-component";
+import { BiCheckCircle, BiEdit } from "react-icons/bi";
 import { IoInformationCircle } from "react-icons/io5";
 import { Link } from "react-router-dom";
 
 const CustomerBugLists = () => {
-    const dispatch = useAppDispatch();
-
-    const actionId = useAppSelector((state) => state.activeAction.id);
-
     const customerSelectedProject = useAppSelector(
         (state) => state.selectProject.id
     );
-
-    const handleActionToggle = (
-        id: string,
-        e: React.MouseEvent<SVGElement>
-    ) => {
-        e.stopPropagation();
-        dispatch(toggleAction({ id: actionId === id ? undefined : id }));
-    };
 
     const { data: bugs, isLoading } = useQuery<Bug[]>({
         queryKey: ["bugs", customerSelectedProject],
@@ -32,6 +22,73 @@ const CustomerBugLists = () => {
             await customerFetchAllBugs(customerSelectedProject),
         enabled: customerSelectedProject !== "",
     });
+
+    const columns: TableColumn<Bug>[] = [
+        {
+            name: "Title",
+            selector: (row: Bug) => row.title,
+            sortable: true,
+        },
+        {
+            name: "Type",
+            selector: (row: Bug) => row.type || "--",
+            sortable: true,
+        },
+        {
+            name: "Priority",
+            selector: (row: Bug) => row.priority.toLowerCase(),
+            sortable: true,
+        },
+        {
+            name: "Severity",
+            selector: (row: Bug) => row.severity.toLowerCase(),
+            sortable: true,
+        },
+        {
+            name: "Summary",
+            selector: (row: Bug) => row.description,
+            sortable: true,
+        },
+        {
+            name: "Status",
+            selector: (row: Bug) => row.status.toLowerCase(),
+            sortable: true,
+        },
+        {
+            name: "Progress",
+            selector: (row: Bug) => row.progress,
+            sortable: true,
+        },
+        {
+            cell: (row) => (
+                <TableActionCustomer id={row.id}>
+                    <div
+                        className="bg-white w-28 max-h-28 absolute top-4 right-4 rounded-md select-none border border-zinc-300"
+                        onClick={(e) => e.stopPropagation()}
+                    >
+                        <Link
+                            to={`${ROUTE_PATHS.CUSTOMER_BUG_DETAIL}/${row.id}`}
+                            className="flex items-center gap-x-2 hover:bg-zinc-200 p-2 px-2.5 rounded-t-md border-b border-gray-200"
+                        >
+                            <IoInformationCircle size={20} />
+                            <span>Detail</span>
+                        </Link>
+                        <Link
+                            to={`${ROUTE_PATHS.CUSTOMER_BUG_EDIT}/${row.id}`}
+                            className="flex items-center gap-x-2 p-2 px-2.5 hover:bg-zinc-200 border-b border-gray-200"
+                        >
+                            <BiEdit size={20} />
+                            <span>Edit</span>
+                        </Link>
+                        <div className="flex items-center gap-x-2 p-2 px-2.5 hover:bg-zinc-200 border-b border-gray-200 cursor-pointer">
+                            <BiCheckCircle size={20} />
+                            <span>Resolved</span>
+                        </div>
+                    </div>
+                </TableActionCustomer>
+            ),
+        },
+    ];
 
     return (
         <main className="w-[98%] m-auto">
@@ -43,94 +100,18 @@ const CustomerBugLists = () => {
                 {isLoading ? (
                     <CustomerTableLoading numberOfTableColumns={6} />
                 ) : (
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>ID</th>
-                                <th>Title</th>
-                                <th>Type</th>
-                                <th>Priority</th>
-                                <th>Severity</th>
-                                <th>Summary</th>
-                                <th>Status</th>
-                                <th>Progress</th>
-                                <th></th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {bugs && bugs?.length > 0 ? (
-                                bugs?.map((bug, i) => (
-                                    <tr key={bug.id}>
-                                        <td>{i + 1}</td>
-                                        <td className="cursor-pointer hover:underline">
-                                            <Link
-                                                to={`${ROUTE_PATHS.CUSTOMER_BUG_DETAIL}/${bug.id}`}
-                                            >
-                                                {bug.title}
-                                            </Link>
-                                        </td>
-                                        <td>{bug.type || "--"}</td>
-                                        <td>{bug.priority}</td>
-                                        <td>{bug.severity}</td>
-                                        <td>{bug.description}</td>
-                                        <td>{bug.status}</td>
-                                        <td>{bug.progress}%</td>
-                                        <td className="text-sm relative">
-                                            <div className="flex justify-center items-center absolute left-0 top-1/2 transform -translate-y-1/2 z-10">
-                                                <BiMenuAltLeft
-                                                    size={20}
-                                                    className="cursor-pointer"
-                                                    onClick={(e) =>
-                                                        handleActionToggle(
-                                                            bug.id,
-                                                            e
-                                                        )
-                                                    }
-                                                />
-                                                {actionId == bug.id && (
-                                                    <div
-                                                        className="bg-white w-28 max-h-28 absolute top-4 right-4 rounded-md select-none border border-zinc-300"
-                                                        onClick={(e) =>
-                                                            e.stopPropagation()
-                                                        }
-                                                    >
-                                                        <Link
-                                                            to={`${ROUTE_PATHS.CUSTOMER_BUG_DETAIL}/${bug.id}`}
-                                                            className="flex items-center gap-x-2 hover:bg-zinc-200 p-2 px-2.5 rounded-t-md border-b border-gray-200"
-                                                        >
-                                                            <IoInformationCircle
-                                                                size={20}
-                                                            />
-                                                            <span>Detail</span>
-                                                        </Link>
-                                                        <Link
-                                                            to={`${ROUTE_PATHS.CUSTOMER_BUG_EDIT}/${bug.id}`}
-                                                            className="flex items-center gap-x-2 p-2 px-2.5 hover:bg-zinc-200 border-b border-gray-200"
-                                                        >
-                                                            <BiEdit size={20} />
-                                                            <span>Edit</span>
-                                                        </Link>
-                                                        <div className="flex items-center gap-x-2 p-2 px-2.5 hover:bg-zinc-200 border-b border-gray-200 cursor-pointer">
-                                                            <BiCheckCircle
-                                                                size={20}
-                                                            />
-                                                            <span>
-                                                                Resolved
-                                                            </span>
-                                                        </div>
-                                                    </div>
-                                                )}
-                                            </div>
-                                        </td>
-                                    </tr>
-                                ))
-                            ) : (
-                                <tr>
-                                    <td>no data</td>
-                                </tr>
-                            )}
-                        </tbody>
-                    </table>
+                    bugs && (
+                        <DataTable
+                            data={bugs}
+                            columns={columns}
+                            defaultSortFieldId="id"
+                            responsive
+                            customStyles={TableCustomerCustomStyle}
+                            highlightOnHover
+                            fixedHeader
+                            pagination
+                        />
+                    )
                 )}
             </div>
         </main>

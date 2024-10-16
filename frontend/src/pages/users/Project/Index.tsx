@@ -1,32 +1,80 @@
 import { Button } from "@/components/ui/button";
 import { ROUTE_PATHS } from "@/constants/ROUTE_PATHS";
-import { useAppDispatch, useAppSelector } from "@/store";
-import { BiEdit, BiMenuAltLeft, BiTrash } from "react-icons/bi";
+import { BiEdit, BiTrash } from "react-icons/bi";
 import { Link } from "react-router-dom";
-import { toggleAction } from "../../../store/activeActionReducer";
 import { useQuery } from "@tanstack/react-query";
 import { Project as ProjectType } from "@/types";
 import { fetchAllProjects } from "@/lib/clientAPI";
 import TableLoading from "@/components/TableLoading";
 import { IoInformationCircle } from "react-icons/io5";
 import { formatRelative } from "date-fns";
+import DataTable, { TableColumn } from "react-data-table-component";
+import { TableUserCustomStyle } from "@/components/TableCustomStyle";
+import { TableActionUser } from "@/components/TableAction";
 
 const Project = () => {
-    const dispatch = useAppDispatch();
-    const actionId = useAppSelector((state) => state.activeAction.id);
-
-    const handleActionToggle = (
-        id: string,
-        e: React.MouseEvent<SVGElement>
-    ) => {
-        e.stopPropagation();
-        dispatch(toggleAction({ id: actionId === id ? undefined : id }));
-    };
-
     const { data: projects, isLoading } = useQuery<ProjectType[]>({
         queryKey: ["projects"],
         queryFn: fetchAllProjects,
     });
+
+    const columns: TableColumn<ProjectType>[] = [
+        {
+            name: "Company",
+            selector: (row: ProjectType) => row.company.name,
+            sortable: true,
+        },
+        {
+            name: "Name",
+            selector: (row: ProjectType) => row.name,
+            sortable: true,
+        },
+
+        {
+            name: "Logo",
+            cell: (row) => (
+                <div className="flex justify-center items-center">
+                    <img
+                        className="max-h-20 max-w-20"
+                        src={`${
+                            import.meta.env.VITE_API_BASE_URL
+                        }/storage/uploads/projectLogo/${row.logo}`}
+                        alt=""
+                    />
+                </div>
+            ),
+        },
+        {
+            name: "Created At",
+            selector: (row: ProjectType) =>
+                formatRelative(new Date(row.created_at), new Date()),
+            sortable: true,
+        },
+        {
+            cell: (row) => (
+                <TableActionUser id={row.id}>
+                    <Link
+                        to={`${ROUTE_PATHS.USER_PROJECT_DETAIL}/${row.id}`}
+                        className="flex items-center gap-x-2 hover:bg-zinc-600 p-2 px-2.5 rounded-t-md border-b border-gray-500"
+                    >
+                        <IoInformationCircle size={20} />
+                        <span>Detail</span>
+                    </Link>
+                    <Link
+                        to={`${ROUTE_PATHS.USER_PROJECT_EDIT}/${row.id}`}
+                        className="flex items-center gap-x-2 p-2 px-2.5 hover:bg-zinc-600 border-b border-gray-500"
+                    >
+                        <BiEdit size={20} />
+                        <span>Edit</span>
+                    </Link>
+                    <div className="flex items-center gap-x-2 p-2 px-2.5 cursor-pointer hover:bg-zinc-600">
+                        <BiTrash size={20} />
+                        <span>Delete</span>
+                    </div>
+                </TableActionUser>
+            ),
+        },
+    ];
 
     return (
         <div className="m-2 text-zinc-300">
@@ -42,113 +90,16 @@ const Project = () => {
                 {isLoading ? (
                     <TableLoading numberOfTableColumns={8} />
                 ) : (
-                    <table className="bg-zinc-800 rounded-t-lg">
-                        <thead>
-                            <tr className="bg-zinc-600">
-                                <th className="py-2 text-zinc-300 border-r border-b border-solid border-zinc-600 rounded-tl-lg">
-                                    ID
-                                </th>
-                                <th className="py-2 text-zinc-300 border border-solid border-zinc-600">
-                                    Company
-                                </th>
-                                <th className="py-2 text-zinc-300 border border-solid border-zinc-600">
-                                    Name
-                                </th>
-                                <th className="py-2 text-zinc-300 border border-solid border-zinc-600">
-                                    Logo
-                                </th>
-                                <th className="py-2 text-zinc-300 border-b border-solid border-zinc-600">
-                                    Created At
-                                </th>
-                                <th className="py-2 text-zinc-300 border-l border-b border-solid border-zinc-600 rounded-tr-lg text-center">
-                                    Action
-                                </th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {projects && projects.length > 0 ? (
-                                projects.map((project, i) => (
-                                    <tr
-                                        className="hover:bg-zinc-700"
-                                        key={project.id}
-                                    >
-                                        <td className="text-zinc-300 border border-solid border-zinc-600 text-sm">
-                                            {i + 1}
-                                        </td>
-                                        <td className="text-zinc-300 border border-solid border-zinc-600 text-sm">
-                                            {project.company.name}
-                                        </td>
-                                        <td className="text-zinc-300 border border-solid border-zinc-600 text-sm">
-                                            {project.name}
-                                        </td>
-                                        <td className="text-zinc-300 border border-solid border-zinc-600 text-sm">
-                                            {project.logo}
-                                        </td>
-                                        <td className="text-zinc-300 border border-solid border-zinc-600 text-sm">
-                                            {formatRelative(
-                                                new Date(project.created_at),
-                                                new Date()
-                                            )}
-                                        </td>
-                                        <td className="text-zinc-300 border border-solid border-zinc-600 text-sm relative">
-                                            <div className="flex justify-center items-center absolute left-1/2 top-1/2 transform -translate-y-1/2 -translate-x-1/2">
-                                                <BiMenuAltLeft
-                                                    size={20}
-                                                    className="cursor-pointer"
-                                                    onClick={(e) =>
-                                                        handleActionToggle(
-                                                            project.id,
-                                                            e
-                                                        )
-                                                    }
-                                                />
-                                                {actionId == project.id && (
-                                                    <div
-                                                        className="bg-zinc-700 w-28 h-28 absolute top-4 right-4 rounded-md select-none border border-zinc-500"
-                                                        onClick={(e) =>
-                                                            e.stopPropagation()
-                                                        }
-                                                    >
-                                                        <Link
-                                                            to={`${ROUTE_PATHS.USER_PROJECT_DETAIL}/${project.id}`}
-                                                            className="flex items-center gap-x-2 hover:bg-zinc-600 p-2 px-2.5 rounded-t-md border-b border-gray-500"
-                                                        >
-                                                            <IoInformationCircle
-                                                                size={20}
-                                                            />
-                                                            <span>Detail</span>
-                                                        </Link>
-                                                        <Link
-                                                            to={`${ROUTE_PATHS.USER_PROJECT_EDIT}/${project.id}`}
-                                                            className="flex items-center gap-x-2 p-2 px-2.5 hover:bg-zinc-600 border-b border-gray-500"
-                                                        >
-                                                            <BiEdit size={20} />
-                                                            <span>Edit</span>
-                                                        </Link>
-                                                        <div className="flex items-center gap-x-2 p-2 px-2.5 cursor-pointer hover:bg-zinc-600">
-                                                            <BiTrash
-                                                                size={20}
-                                                            />
-                                                            <span>Delete</span>
-                                                        </div>
-                                                    </div>
-                                                )}
-                                            </div>
-                                        </td>
-                                    </tr>
-                                ))
-                            ) : (
-                                <tr className="hover:bg-transparent">
-                                    <td
-                                        colSpan={6}
-                                        className="text-zinc-300 text-center text-base py-2"
-                                    >
-                                        no data
-                                    </td>
-                                </tr>
-                            )}
-                        </tbody>
-                    </table>
+                    projects && (
+                        <DataTable
+                            data={projects}
+                            columns={columns}
+                            defaultSortFieldId="id"
+                            responsive
+                            customStyles={TableUserCustomStyle}
+                            highlightOnHover
+                        />
+                    )
                 )}
             </div>
         </div>
