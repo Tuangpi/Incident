@@ -31,7 +31,7 @@ const CustomerBugLists = () => {
         },
         {
             name: "Type",
-            selector: (row: Bug) => row.type || "--",
+            selector: (row: Bug) => row.bug_type?.name || "--",
             sortable: true,
         },
         {

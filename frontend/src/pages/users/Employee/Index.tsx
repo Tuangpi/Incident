@@ -7,7 +7,6 @@ import { fetchAllEmployees } from "@/lib/clientAPI";
 import TableLoading from "@/components/TableLoading";
 import DataTable, { TableColumn } from "react-data-table-component";
 import { TableUserCustomStyle } from "@/components/TableCustomStyle";
-import { IoInformationCircle } from "react-icons/io5";
 import { BiEdit, BiTrash } from "react-icons/bi";
 import { TableActionUser } from "@/components/TableAction";
 

@@ -14,9 +14,10 @@ class BugsController extends Controller
 {
     public function index($projectId)
     {
-        $bugs = Bug::when($projectId !== "all", function ($q, $projectId) {
-            $q->where('project_id', $projectId);
-        })
+        $bugs = Bug::with('bug_type:id,name')
+            ->when($projectId !== "all", function ($q, $projectId) {
+                $q->where('project_id', $projectId);
+            })
             ->whereHas('project', function ($q) {
                 $q->where('company_id', Auth::guard('customer')->user()->company_id);
             })
