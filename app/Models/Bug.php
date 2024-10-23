@@ -20,6 +20,16 @@ class Bug extends Model
         return $this->belongsTo(Customer::class, 'reported_by_id');
     }
 
+    public function employee()
+    {
+        return $this->belongsTo(User::class, 'assigned_to_id');
+    }
+
+    public function bug_type()
+    {
+        return $this->belongsTo(BugType::class, 'bug_types_id');
+    }
+
     public function company()
     {
         return $this->hasOneThrough(Company::class, Project::class, 'id', 'id', 'project_id', 'company_id');

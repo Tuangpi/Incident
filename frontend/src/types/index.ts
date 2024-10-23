@@ -24,6 +24,8 @@ export interface Customer {
     company_id: string
     created_at: string
     updated_at: string;
+
+    company?: Company
 }
 
 export interface Project {
@@ -43,7 +45,7 @@ export interface Bug {
     title: string;
     file: string;
     description: string;
-    type: string
+    bug_types_id: string
     status: string
     severity: string
     priority: string
@@ -51,15 +53,16 @@ export interface Bug {
     link: string
     due_date: string
     reported_by_id: string
-    bug_type_id: string
-    assign_to_id: string
+    assigned_to_id: string
     project_id: string
     resolution: string
     created_at: string
     updated_at: string;
 
     project: Project
+    employee?: User
     reported_by: Customer
+    bug_type?: BugType
 }
 
 export interface BugType {

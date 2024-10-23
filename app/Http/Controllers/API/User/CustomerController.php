@@ -12,7 +12,7 @@ class CustomerController extends Controller
 {
     public function index()
     {
-        $customers = Customer::all();
+        $customers = Customer::with('company:id,name')->get();
         return response()->json($customers);
     }
 

@@ -5,15 +5,16 @@ import { ROUTE_PATHS } from "@/constants/ROUTE_PATHS";
 import { toast } from "@/hooks/use-toast";
 import { fetchBugType, updateBugType } from "@/lib/bugClientAPI";
 import { BugType } from "@/types";
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import React, { useEffect, useState } from "react";
 import { IoArrowBack } from "react-icons/io5";
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 
 const EditBugType = () => {
     const { id } = useParams();
-
+    const queryClient = useQueryClient();
     const [name, setName] = useState("");
+    const navigate = useNavigate();
 
     const { data: bugType } = useQuery<BugType>({
         queryKey: ["bugType", id],
@@ -22,11 +23,15 @@ const EditBugType = () => {
 
     const updateBugTypeMutation = useMutation({
         mutationFn: updateBugType,
-        onSuccess: () => {
+        onSuccess: async () => {
+            await queryClient.invalidateQueries({
+                queryKey: ["bugTypes"],
+            });
+            await queryClient.refetchQueries({ queryKey: ["bugTypes"] });
             toast({
                 description: "Bug Type has been update successfully!",
             });
-            setName("");
+            navigate(ROUTE_PATHS.USER_BUG_TYPE_LISTS);
         },
     });
 

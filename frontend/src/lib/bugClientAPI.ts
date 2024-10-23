@@ -139,24 +139,25 @@ export const updateBug = async ({
     severity,
     priority,
     due_date,
-    reported_by,
     assign_to,
     project_id,
-    resolution }: {
-        id: string,
-        title: string,
-        type: string;
-        description: string,
-        image: File | null,
-        status: string,
-        severity: string,
-        priority: string,
-        reported_by: string,
-        due_date: string,
-        assign_to: string,
-        project_id: string,
-        resolution: string
-    }) => {
+    progress,
+    link
+}: {
+    id: string,
+    title: string,
+    type: string;
+    description: string,
+    image: File | null,
+    status: string,
+    severity: string,
+    priority: string,
+    due_date: string | "",
+    assign_to: string,
+    project_id: string,
+    progress: number,
+    link: string,
+}) => {
 
     const res = await axiosInstance.post(`/bug/update/${id}`, {
         title,
@@ -166,10 +167,12 @@ export const updateBug = async ({
         status,
         severity,
         priority,
-        reported_by,
         due_date,
-        assign_to, project_id, resolution
-    });
+        assign_to,
+        project_id,
+        progress,
+        link
+    }, { headers: { 'Content-Type': 'multipart/form-data' } });
 
     if (res.status === 200) return res.data;
     throw new Error("Error: Check Network Log");

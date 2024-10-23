@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { ROUTE_PATHS } from "@/constants/ROUTE_PATHS";
-import { BiEdit, BiTrash } from "react-icons/bi";
+import { BiEdit, BiFirstPage, BiLastPage, BiTrash } from "react-icons/bi";
 import { Link } from "react-router-dom";
 import { IoInformationCircle } from "react-icons/io5";
 import { useQuery } from "@tanstack/react-query";
@@ -28,7 +28,7 @@ import {
     fetchAllProjects,
 } from "@/lib/clientAPI";
 import { useState } from "react";
-import { FaCircleXmark } from "react-icons/fa6";
+import { FaAnglesLeft, FaAnglesRight, FaCircleXmark } from "react-icons/fa6";
 import { TbFilterPlus } from "react-icons/tb";
 import DataTable, { TableColumn } from "react-data-table-component";
 import { TableUserCustomStyle } from "@/components/TableCustomStyle";
@@ -106,7 +106,7 @@ const Bug = () => {
         },
         {
             name: "Type",
-            selector: (row: BugType) => row.bug_type_id,
+            selector: (row: BugType) => row.bug_type?.name || "--",
             sortable: true,
         },
         {
@@ -125,23 +125,13 @@ const Bug = () => {
             sortable: true,
         },
         {
-            name: "Due Date",
-            selector: (row: BugType) => row.due_date,
-            sortable: true,
-        },
-        {
             name: "Reported By",
             selector: (row: BugType) => row.reported_by.email,
             sortable: true,
         },
         {
             name: "Assign To",
-            selector: (row: BugType) => row.assign_to_id,
-            sortable: true,
-        },
-        {
-            name: "Project",
-            selector: (row: BugType) => row.project.name,
+            selector: (row: BugType) => row.employee?.name || "--",
             sortable: true,
         },
         {
@@ -161,7 +151,7 @@ const Bug = () => {
                         <BiEdit size={20} />
                         <span>Edit</span>
                     </Link>
-                    <div className="flex items-center gap-x-2 p-2 px-2.5 cursor-pointer hover:bg-zinc-600">
+                    <div className="flex items-center gap-x-2 p-2 px-2.5 cursor-pointer hover:bg-zinc-600 text-red-500">
                         <BiTrash size={20} />
                         <span>Delete</span>
                     </div>
@@ -175,7 +165,7 @@ const Bug = () => {
             <div className="mb-4">
                 <h5 className="text-zinc-300">Bug Lists</h5>
             </div>
-            <div className="bg-zinc-800 p-3 rounded-md overflow-x-auto">
+            <div className="bg-zinc-800 p-3 rounded-md">
                 <div className="flex justify-between items-end mb-3">
                     <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-2">
                         <Select
@@ -397,6 +387,25 @@ const Bug = () => {
                             responsive
                             customStyles={TableUserCustomStyle}
                             highlightOnHover
+                            pagination
+                            paginationIconNext={
+                                <FaAnglesRight className="text-zinc-400" />
+                            }
+                            paginationIconPrevious={
+                                <FaAnglesLeft className="text-zinc-400" />
+                            }
+                            paginationIconFirstPage={
+                                <BiFirstPage
+                                    className="text-zinc-400"
+                                    size={22}
+                                />
+                            }
+                            paginationIconLastPage={
+                                <BiLastPage
+                                    className="text-zinc-400"
+                                    size={22}
+                                />
+                            }
                         />
                     )
                 )}

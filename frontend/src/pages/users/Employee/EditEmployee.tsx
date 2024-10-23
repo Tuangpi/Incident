@@ -105,7 +105,7 @@ const EditEmployee = () => {
                         />
                     </div>
                     <div>
-                        <Label htmlFor="password">Password</Label>
+                        <Label htmlFor="password">Change Password</Label>
                         <Input
                             id="password"
                             type="text"

@@ -24,6 +24,11 @@ const Customer = () => {
             sortable: true,
         },
         {
+            name: "Company",
+            selector: (row: CustomerType) => row.company?.name || "--",
+            sortable: true,
+        },
+        {
             cell: (row) => (
                 <TableActionUser id={row.id}>
                     <Link
@@ -40,7 +45,7 @@ const Customer = () => {
                         <BiEdit size={20} />
                         <span>Edit</span>
                     </Link>
-                    <div className="flex items-center gap-x-2 p-2 px-2.5 cursor-pointer hover:bg-zinc-600">
+                    <div className="flex items-center gap-x-2 p-2 px-2.5 cursor-pointer hover:bg-zinc-600 text-red-500">
                         <BiTrash size={20} />
                         <span>Delete</span>
                     </div>

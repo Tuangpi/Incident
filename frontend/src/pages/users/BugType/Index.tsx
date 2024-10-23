@@ -5,7 +5,7 @@ import { useQuery } from "@tanstack/react-query";
 import { fetchAllBugTypes } from "@/lib/bugClientAPI";
 import TableLoading from "@/components/TableLoading";
 import { BugType as BugTypeState } from "@/types";
-import { formatRelative } from "date-fns";
+import { format } from "date-fns";
 import DataTable, { TableColumn } from "react-data-table-component";
 import { TableUserCustomStyle } from "@/components/TableCustomStyle";
 import { BiEdit, BiTrash } from "react-icons/bi";
@@ -26,7 +26,7 @@ const BugType = () => {
         {
             name: "Created At",
             selector: (row: BugTypeState) =>
-                formatRelative(new Date(row.created_at), new Date()),
+                format(new Date(row.created_at), "dd MMM yyyy"),
             sortable: true,
         },
         {
@@ -39,7 +39,7 @@ const BugType = () => {
                         <BiEdit size={20} />
                         <span>Edit</span>
                     </Link>
-                    <div className="flex items-center gap-x-2 p-2 px-2.5 cursor-pointer hover:bg-zinc-600">
+                    <div className="flex items-center gap-x-2 p-2 px-2.5 cursor-pointer hover:bg-zinc-600 text-red-500">
                         <BiTrash size={20} />
                         <span>Delete</span>
                     </div>

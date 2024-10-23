@@ -2,7 +2,7 @@ import CustomerDashboardLoading from "@/components/CustomerDashboardLoading";
 import { fetchCustomerDashboardData } from "@/lib/clientAPI";
 import { Bug } from "@/types";
 import { useQuery } from "@tanstack/react-query";
-import { formatRelative } from "date-fns";
+import { format } from "date-fns";
 
 interface DashboardState {
     id: string;
@@ -39,9 +39,9 @@ const CustomerDashboard = () => {
                         </div>
                         <div className="text-sm text-gray-600">
                             {customerDashboard?.updated_at &&
-                                formatRelative(
+                                format(
                                     new Date(customerDashboard.updated_at),
-                                    new Date()
+                                    "dd MMM yyyy"
                                 )}
                         </div>
                     </div>

@@ -15,8 +15,7 @@ export const TableUserCustomStyle = {
     },
     tableWrapper: {
         style: {
-            // backgroundColor: "blue",
-            // padding: "10px 0"
+            // overflow: "unset"
         }
     },
     table: {
@@ -28,11 +27,13 @@ export const TableUserCustomStyle = {
         style: {
             backgroundColor: "#52525b",
             border: 'none',
+            fontSize: "0.80rem",
         },
     },
     headCells: {
         style: {
             color: "#d4d4d8",
+            textTransform: "uppercase" as "uppercase"
         },
     },
     rows: {
@@ -44,19 +45,20 @@ export const TableUserCustomStyle = {
         },
         style: {
             backgroundColor: "#27272a",
-            // zIndex: 0
         },
     },
     cells: {
         style: {
             color: "#d4d4d8",
-            fontSize: "0.875rem",
-
+            fontSize: "0.850rem",
         },
     },
     pagination: {
         style: {
-            border: 'none',
+            backgroundColor: "#3f3f46",
+            color: "#d4d4d8",
+            fontSize: "0.800rem",
+            borderRadius: "0 0 10px 10px",
         },
     },
 };

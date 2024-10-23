@@ -30,19 +30,19 @@ const Employee = () => {
         },
         {
             name: "Role",
-            selector: (row: User) => row.role.toUpperCase(),
+            selector: (row: User) => row.role.toLowerCase(),
             sortable: true,
         },
         {
             cell: (row) => (
                 <TableActionUser id={row.id}>
-                    <Link
+                    {/* <Link
                         to={`${ROUTE_PATHS.USER_EMPLOYEE_DETAIL}/${row.id}`}
                         className="flex items-center gap-x-2 hover:bg-zinc-600 p-2 px-2.5 rounded-t-md border-b border-gray-500"
                     >
                         <IoInformationCircle size={20} />
                         <span>Detail</span>
-                    </Link>
+                    </Link> */}
                     <Link
                         to={`${ROUTE_PATHS.USER_EMPLOYEE_EDIT}/${row.id}`}
                         className="flex items-center gap-x-2 p-2 px-2.5 hover:bg-zinc-600 border-b border-gray-500"
@@ -50,7 +50,7 @@ const Employee = () => {
                         <BiEdit size={20} />
                         <span>Edit</span>
                     </Link>
-                    <div className="flex items-center gap-x-2 p-2 px-2.5 cursor-pointer hover:bg-zinc-600">
+                    <div className="flex items-center gap-x-2 p-2 px-2.5 cursor-pointer hover:bg-zinc-600 text-red-500">
                         <BiTrash size={20} />
                         <span>Delete</span>
                     </div>

@@ -4,21 +4,27 @@ import { Label } from "@/components/ui/label";
 import { ROUTE_PATHS } from "@/constants/ROUTE_PATHS";
 import { toast } from "@/hooks/use-toast";
 import { createBugTypes } from "@/lib/bugClientAPI";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import React, { useState } from "react";
 import { IoArrowBack } from "react-icons/io5";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const CreateBugType = () => {
     const [name, setName] = useState("");
+    const queryClient = useQueryClient();
+    const navigate = useNavigate();
 
     const createBugTypeMutation = useMutation({
         mutationFn: createBugTypes,
-        onSuccess: () => {
+        onSuccess: async () => {
+            await queryClient.invalidateQueries({
+                queryKey: ["bugTypes"],
+            });
+            await queryClient.refetchQueries({ queryKey: ["bugTypes"] });
             toast({
                 description: "Bug Type has been created successfully!",
             });
-            setName("");
+            navigate(ROUTE_PATHS.USER_BUG_TYPE_LISTS);
         },
     });
 

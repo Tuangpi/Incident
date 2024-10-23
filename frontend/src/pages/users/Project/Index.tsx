@@ -7,7 +7,7 @@ import { Project as ProjectType } from "@/types";
 import { fetchAllProjects } from "@/lib/clientAPI";
 import TableLoading from "@/components/TableLoading";
 import { IoInformationCircle } from "react-icons/io5";
-import { formatRelative } from "date-fns";
+import { format } from "date-fns";
 import DataTable, { TableColumn } from "react-data-table-component";
 import { TableUserCustomStyle } from "@/components/TableCustomStyle";
 import { TableActionUser } from "@/components/TableAction";
@@ -47,7 +47,7 @@ const Project = () => {
         {
             name: "Created At",
             selector: (row: ProjectType) =>
-                formatRelative(new Date(row.created_at), new Date()),
+                format(new Date(row.created_at), "dd MMM yyyy"),
             sortable: true,
         },
         {
@@ -67,7 +67,7 @@ const Project = () => {
                         <BiEdit size={20} />
                         <span>Edit</span>
                     </Link>
-                    <div className="flex items-center gap-x-2 p-2 px-2.5 cursor-pointer hover:bg-zinc-600">
+                    <div className="flex items-center gap-x-2 p-2 px-2.5 cursor-pointer hover:bg-zinc-600 text-red-500">
                         <BiTrash size={20} />
                         <span>Delete</span>
                     </div>
